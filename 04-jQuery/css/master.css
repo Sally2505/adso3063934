@@ -101,5 +101,19 @@ main {
                 border: 1px solid #000000;  
             }
         }
+
+        button#reset{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: crimson;
+            color: white;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            margin: auto;
+            width: 100px;
+
+        }
     
 }
