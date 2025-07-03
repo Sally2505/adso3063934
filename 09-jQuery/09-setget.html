@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>09 - SET & GET</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="master.css">
+</head>
+<style>
+    section {
+        textarea.text-area {
+            border-radius: 0.4rem;
+            width: 100%;
+            resize: none;
+            min-height: 120px;
+        }
+
+        div.actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.4rem;
+            padding: 0.4rem;
+
+            button {
+                background-color: rgba(2, 35, 97, 0.375);
+                color: rgb(255, 255, 255);
+                border: none;
+                padding: 0.4rem;
+                border-radius: 0.4rem;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+
+                &:hover {
+                    transform: scale(1.05);
+                    background-color: rgba(38, 233, 233, 0.379);
+
+
+                }
+            }
+        }
+    }
+</style>
+
+<body class="jQuery">
+    <nav class="nav">
+        <a href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path
+                    d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+            </svg>
+        </a>
+    </nav>
+    <main>
+        <header class="header">
+            <h1>09 - SET & GET</h1>
+            <h2>Set or get values and attributes of elements.</h2>
+        </header>
+        <section class="section">
+            <textArea class="text-area" rows="10"></textArea>
+            <div class="actions">
+                <button class="set-html">Set HTML</button>
+                <button class="get-html">Get HTML</button>
+                <button class="set-text">Set Text</button>
+                <button class="get-text">Get Text</button>
+                <button class="set-attr">Set Attribute</button>
+                <button class="get-attr">Get Attribute</button>
+                <button class="set-value">Set Value</button>
+                <button class="get-value">Get Value</button>
+            </div>
+        </section>
+    </main>
+    <script src="jsTodoList/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            // Set
+            $('section').on('click', '.set-html', function () {
+                $('.text-area').html(`<ul><li>Apple</li><li>Pear</li><li>Orange</li></ul>`)
+            })
+            $('section').on('click', '.set-text', function () {
+                $('.text-area').text('This is a text set by jQuery.')
+            })
+
+            $('section').on('click', '.set-attr', function () {
+                $('.text-area').attr('rows', '20')
+            })
+
+            $('section').on('click', '.set-value', function () {
+                $('.text-area').val('Memento Mori')
+            })
+
+            // Get
+            $('section').on('click', '.get-html', function () {
+                alert($('.actions').html())
+            })
+            $('section').on('click', '.get-text', function () {
+                alert($('header h2').text())
+            })
+
+            $('section').on('click', '.get-attr', function () {
+                alert($('.text-area').attr('rows'))
+            })
+
+            $('section').on('click', '.get-value', function () {
+                alert($('.text-area').val())
+            })
+
+        })
+    </script>
+</body>
+
+</html>

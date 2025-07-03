@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokedex</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@700&family=Raleway:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/master.css" />
+    <style>
+      /* Fuentes de sall.html */
+      @import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@700&family=Raleway:wght@400;500;600;700;800&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Press Start 2P', monospace; 
+        background-color: #000;
+        background-image: url("gengar.jpg");
+        color: white;
+        display: flex; 
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 10px; 
+      }
+
+      /* Contenedor principal de la aplicación Pokedex */
+      #app-pokedex {
+        display: grid;
+        grid-template-columns: 2fr 1fr; 
+        gap: 20px; 
+        max-width: 1000px;
+        width: 100%;
+        margin: auto; 
+        border: 8px solid #7700ff;
+        background-color: #000;
+        box-shadow: 0 0 15px rgb(174, 56, 190);
+        padding: 15px;
+      }
+
+      .panel-lista {
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      header h1 {
+        font-size: 1.5rem; 
+        text-shadow: 2px 2px 0px black;
+      }
+
+      .panel-minecraft {
+        /* Este estilo ahora se aplica directamente a la app-pokedex */
+        /* Las selecciones y listas tendrán su propio estilo */
+        background-color: black;
+        /* box-shadow: 6px 6px #222222; */
+        border: 2px solid #999999;
+        padding: 0.5rem;
+      }
+
+      select.generacion-pk {
+        display: block;
+        width: 100%;
+        padding: 0.5rem; 
+        font-family: 'Press Start 2P', sans-serif;
+        background-color: black;
+        color: white;
+        border: 2px solid white;
+        margin-bottom: 10px;
+        box-shadow: 3px 3px #222222; 
+      }
+
+      .cargador {
+        text-align: center;
+        margin: 10px 0;
+        font-size: 0.9rem; 
+      }
+
+      /* Contenedor de la lista de Pokémon */
+      ul.pokemones {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 15px;
+        max-height: 550px; 
+        overflow-y: auto;
+        padding-right: 8px; 
+        background-color: #000; 
+        border: 2px solid #444; 
+        flex-grow: 1; 
+      }
+
+      /* Animación de flotar constante para las tarjetas */
+      @keyframes float {
+        0% { transform: translateY(0px) rotateZ(0deg); }
+        25% { transform: translateY(-2px) rotateZ(0.5deg); }
+        50% { transform: translateY(0px) rotateZ(0deg); }
+        75% { transform: translateY(2px) rotateZ(-0.5deg); }
+        100% { transform: translateY(0px) rotateZ(0deg); }
+      }
+
+      /* Estilo de la tarjeta individual (inspirado en .card de sall.html) */
+      ul.pokemones li.pokemon-item {
+        margin: 0 auto;
+        height: 220px; 
+        width: 100%;
+        max-width: 180px; 
+        background-color: #fff;
+        border: 4px solid black;
+        box-shadow: 0 0 0 5px #fff, 0 0 6px 3px #000; 
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease, z-index 0s;
+        position: relative;
+        overflow: hidden; 
+
+        /* Aplica la animación constante */
+        animation: float 4s ease-in-out infinite;
+      }
+
+      ul.pokemones li.pokemon-item:hover {
+        transform: translateY(-5px) scale(1.03); 
+        box-shadow: 0 0 0 5px #fff, 0 0 10px 6px #7700ff; 
+        z-index: 10; 
+      }
+
+      ul.pokemones li.pokemon-item.pokemon-seleccionado {
+        border-color: #7700ff; 
+        box-shadow: 0 0 0 5px #fff, 0 0 10px 6px #7700ff;
+        transform: scale(1.05); 
+      }
+
+      .pokemon-item .card-image {
+        position: relative;
+        width: 100%;
+        border-bottom: 4px solid #000; 
+        height: 65%; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .pokemon-item .card-image img {
+        width: 80%; 
+        height: 80%;
+        object-fit: contain; 
+        image-rendering: pixelated; 
+        transition: transform 0.3s ease-in-out; 
+      }
+
+      .pokemon-item:hover .card-image img {
+        transform: scale(1.1) rotateY(5deg); 
+      }
+
+      .pokemon-item .card-text {
+        height: 35%; 
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around; 
+        padding: 5px 8px; 
+        color: black;
+        font-family: 'Raleway', serif; 
+        text-align: center;
+        font-size: 0.75rem; 
+      }
+
+      .pokemon-item .card-text h3 {
+        font-family: 'Open Sans Condensed', sans-serif; 
+        font-size: 1.1rem; 
+        margin-bottom: 3px;
+        text-transform: uppercase;
+        color: #333;
+      }
+
+      .pokemon-item .card-text p.pokemon-id {
+        font-size: 0.7rem; 
+        font-weight: 600;
+        color: #666;
+      }
+
+      .pokemon-item .card-text .pokemon-types {
+        display: flex;
+        justify-content: center;
+        gap: 3px; 
+        margin-top: 3px;
+      }
+
+      .pokemon-item .card-text .pokemon-types img {
+        width: 18px; 
+        height: 18px; 
+        image-rendering: pixelated;
+      }
+
+      /* Panel de detalles del Pokémon (a la derecha) */
+      .panel-detalle {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #info-pokemon-panel {
+        background-color: black;
+        border: 5px solid #7700ff; 
+        box-shadow: 0 0 10px rgb(174, 56, 190);
+        padding: 10px; 
+        height: 100%; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        position: sticky; 
+        top: 15px; 
+      }
+
+      #info-pokemon-panel::before {
+        content: attr(data-nombre-pokemon);
+        background: #adcbf1; 
+        width: 100%;
+        text-align: center;
+        line-height: 2rem; 
+        font-weight: 700;
+        font-size: 1rem; 
+        box-sizing: border-box;
+        color: black;
+        margin-bottom: 10px; 
+      }
+
+      .info-contenido-pokemon {
+        background: #adcbf1;
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 0.8rem; 
+        color: black;
+        overflow-y: auto; 
+      }
+
+      .info-contenido-pokemon img {
+        image-rendering: pixelated;
+        width: 120px; 
+        height: 120px; 
+        display: block;
+        margin: 0 auto 10px auto;
+        filter: drop-shadow(2px 4px 6px black);
+        border: 2px solid #555; 
+      }
+
+      .info-contenido-pokemon div {
+        margin-top: 0.6rem; 
+        width: 100%;
+        color: black;
+      }
+
+      .info-contenido-pokemon div strong {
+        display: block;
+        margin-bottom: 2px;
+        font-family: 'Press Start 2P', monospace; 
+        font-size: 0.75rem;
+      }
+
+      .info-contenido-pokemon div > div {
+        background: #222;
+        width: 100%;
+        height: 8px; 
+        border-radius: 3px;
+        overflow: hidden;
+        border: 1px solid #5e5e5e;
+      }
+
+      .info-contenido-pokemon div > div > div {
+        height: 100%;
+        background: var(--color-estadistica);
+      }
+
+      /* OCULTAR ELEMENTOS */
+      .ocultar {
+        display: none !important;
+      }
+
+      /* MEDIA QUERIES */
+
+      /* Para pantallas pequeñas (móviles, hasta 768px) */
+      @media (max-width: 768px) {
+        #app-pokedex {
+          grid-template-columns: 1fr;
+          gap: 15px;
+          padding: 10px;
+          border-width: 5px;
+        }
+
+        header h1 {
+          font-size: 1.2rem;
+        }
+
+        select.generacion-pk {
+          padding: 0.4rem;
+          font-size: 0.8rem;
+        }
+
+        ul.pokemones {
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
+          gap: 10px;
+          max-height: 400px; 
+          padding-right: 5px;
+        }
+
+        ul.pokemones li.pokemon-item {
+          height: 190px; 
+          max-width: 150px;
+          border-width: 3px;
+          box-shadow: 0 0 0 3px #fff, 0 0 4px 2px #000;
+          animation: none; 
+        }
+
+        ul.pokemones li.pokemon-item:hover {
+          transform: none; 
+          box-shadow: 0 0 0 3px #fff, 0 0 4px 2px #000;
+        }
+
+        .pokemon-item .card-image {
+          height: 60%; 
+          border-width: 3px;
+        }
+
+        .pokemon-item .card-image img {
+          width: 70%;
+          height: 70%;
+        }
+        .pokemon-item:hover .card-image img {
+            transform: none; 
+        }
+
+        .pokemon-item .card-text {
+          height: 40%;
+          font-size: 0.7rem;
+          padding: 5px;
+        }
+        .pokemon-item .card-text h3 {
+            font-size: 1rem;
+        }
+        .pokemon-item .card-text p.pokemon-id {
+            font-size: 0.6rem;
+        }
+        .pokemon-item .card-text .pokemon-types img {
+            width: 15px;
+            height: 15px;
+        }
+
+        .panel-detalle {
+          order: 1; 
+        }
+
+        .panel-lista {
+          order: 2;
+        }
+
+        #info-pokemon-panel {
+          border-width: 3px;
+          box-shadow: 0 0 8px rgb(174, 56, 190);
+          top: 0; 
+          height: auto; 
+        }
+
+        #info-pokemon-panel::before {
+          line-height: 1.8rem;
+          font-size: 0.9rem;
+        }
+
+        .info-contenido-pokemon {
+          font-size: 0.7rem;
+          padding: 8px;
+        }
+
+        .info-contenido-pokemon img {
+          width: 100px;
+          height: 100px;
+        }
+
+        .info-contenido-pokemon div strong {
+          font-size: 0.7rem;
+        }
+
+        .info-contenido-pokemon div > div {
+          height: 7px;
+        }
+      }
+
+      /* Para pantallas medianas (tabletas, entre 769px y 1024px) */
+      @media (min-width: 769px) and (max-width: 1024px) {
+        #app-pokedex {
+          grid-template-columns: 3fr 2fr; 
+          gap: 15px;
+          max-width: 900px;
+          padding: 10px;
+        }
+
+        ul.pokemones {
+          grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+          gap: 12px;
+          max-height: 500px;
+        }
+
+        ul.pokemones li.pokemon-item {
+          height: 200px;
+          max-width: 160px;
+        }
+
+        .pokemon-item .card-text h3 {
+            font-size: 1.05rem;
+        }
+
+        #info-pokemon-panel {
+            top: 10px; 
+        }
+
+        .info-contenido-pokemon img {
+            width: 110px;
+            height: 110px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <nav class="nav">
+        <a href="../index.html">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                <path
+                    d="M320 33.8L320 160 48.5 160C100.2 82.8 188.1 32 288 32c10.8 0 21.5 .6 32 1.8zM352 160l0-120.9C424.9 55.7 487.2 99.8 527.5 160L352 160zM29.9 192L96 192l0 128L0 320c0-46 10.8-89.4 29.9-128zM192 320l-64 0 0-128 320 0 0 128-64 0 0 32 192 0 0 80c0 26.5-21.5 48-48 48l-176 0 0-128c0-35.3-28.7-64-64-64s-64 28.7-64 64l0 128L48 480c-26.5 0-48-21.5-48-48l0-80 192 0 0-32zm288 0l0-128 66.1 0c19.2 38.6 29.9 82 29.9 128l-96 0z" />
+            </svg>
+        </a>
+    </nav>
+    </nav>
+    <div id="app-pokedex">
+      <div class="panel-lista">
+        <header>
+          <h1>Pokedex</h1>
+        </header>
+        <select class="generacion-pk">
+          <option value="">Selecciona una generación</option>
+        </select>
+        <div class="cargador ocultar">Cargando...</div>
+        <ul class="pokemones"></ul>
+      </div>
+      <div class="panel-detalle">
+        <div id="info-pokemon-panel">
+          <div class="info-contenido-pokemon">
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const listaPokemones = document.querySelector(".pokemones");
+      const generacionPk = document.querySelector(".generacion-pk");
+      const infoPokemonPanel = document.querySelector("#info-pokemon-panel");
+      const infoContenidoPokemon = document.querySelector(".info-contenido-pokemon");
+      const cargador = document.querySelector(".cargador");
+
+      const generaciones = {
+        rango: [
+          { desde: 1, hasta: 151, nombre: "Kanto" },
+          { desde: 152, hasta: 251, nombre: "Johto" },
+          { desde: 252, hasta: 386, nombre: "Hoenn" },
+          { desde: 387, hasta: 493, nombre: "Sinnoh" },
+          { desde: 494, hasta: 649, nombre: "Teselia" },
+          { desde: 650, hasta: 721, nombre: "Kalos" },
+          { desde: 722, hasta: 809, nombre: "Alola" },
+          { desde: 810, hasta: 890, nombre: "Galar" },
+          { desde: 891, hasta: 1025, nombre: "Paldea" },
+        ],
+      };
+
+      const tipos = {
+        normal: "#a8a77a",
+        fire: "#ee8130",
+        water: "#6390f0",
+        electric: "#f7d02c",
+        grass: "#7ac74c",
+        ice: "#96d9d6",
+        fighting: "#c22e28",
+        poison: "#a33ea1",
+        ground: "#e2bf65",
+        flying: "#a98ff3",
+        psychic: "#f95587",
+        bug: "#a6b91a",
+        rock: "#b6a136",
+        ghost: "#735797",
+        dragon: "#6f35fc",
+        dark: "#705746",
+        steel: "#b7b7ce",
+        fairy: "#d685ad",
+        shadow: "#5a5a5a",
+        unknown: "#68a090",
+      };
+
+      generaciones.rango.forEach((gen, indice) => {
+        generacionPk.innerHTML += `<option value="${indice}">Generación ${
+          indice + 1
+        } (${gen.nombre})</option>`;
+      });
+
+      generacionPk.addEventListener("change", function () {
+        const indiceGeneracion = this.value;
+        if (indiceGeneracion === "") {
+            listaPokemones.innerHTML = "";
+            infoContenidoPokemon.innerHTML = "<p>Selecciona una generación para ver los Pokémon.</p>";
+            infoPokemonPanel.setAttribute('data-nombre-pokemon', 'Información');
+            return;
+        }
+        const { desde, hasta } = generaciones.rango[indiceGeneracion];
+        cargarPokemones(desde, hasta);
+      });
+
+      const cargarPokemones = async (desde, hasta) => {
+        cargador.classList.remove("ocultar");
+        listaPokemones.innerHTML = "";
+        infoContenidoPokemon.innerHTML = "<p>Cargando Pokémon...</p>";
+        infoPokemonPanel.setAttribute('data-nombre-pokemon', 'Cargando...');
+
+
+        const promesasPokemones = [];
+        for (let pk = desde; pk <= hasta; pk++) {
+          promesasPokemones.push(
+            fetch(`https://pokeapi.co/api/v2/pokemon/${pk}`)
+              .then(res => res.json())
+              .catch(e => {
+                console.error(`Error al cargar pokemon ${pk}:`, e);
+                return null;
+              })
+          );
+        }
+
+        const todosDatosPokemon = await Promise.all(promesasPokemones);
+
+        // Limpiar antes de añadir las nuevas tarjetas
+        listaPokemones.innerHTML = "";
+
+        todosDatosPokemon.forEach(datos => {
+          if (!datos) return;
+          const tipo = datos.types.length > 0 ? datos.types[0].type.name : 'unknown';
+          const typeIcons = datos.types
+            .map(
+              (t) =>
+                `<img src="https://raw.githubusercontent.com/duiker101/pokemon-type-svg-icons/master/icons/${t.type.name}.svg" width="18" alt="${t.type.name} type" />`
+            )
+            .join("");
+          
+          const cardElement = document.createElement("li");
+          cardElement.classList.add("pokemon-item");
+          cardElement.dataset.id = datos.id;
+          // El background-color del card-image se establece con JS en el HTML
+          // para que el efecto degradado de la sombra del borde tenga color del tipo
+
+          cardElement.innerHTML = `
+              <div class="card-image" style="background-color: ${tipos[tipo]};">
+                <img src="${datos.sprites.front_default}" alt="${
+              datos.name
+            }" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png';"/>
+              </div>
+              <div class="card-text">
+                <h3>${capitalizar(datos.name)}</h3>
+                <p class="pokemon-id">#${String(datos.id).padStart(3, '0')}</p>
+                <div class="pokemon-types">
+                  ${typeIcons}
+                </div>
+              </div>
+            `;
+          listaPokemones.appendChild(cardElement);
+        });
+
+        cargador.classList.add("ocultar");
+        // Seleccionar el primer pokemon si la lista no está vacía
+        if (listaPokemones.children.length > 0) {
+          listaPokemones.children[0].click(); 
+        } else {
+          infoContenidoPokemon.innerHTML = "<p>No se encontraron Pokémon para esta generación.</p>";
+          infoPokemonPanel.setAttribute('data-nombre-pokemon', 'No Disponible');
+        }
+      };
+
+      function capitalizar(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+      }
+
+      listaPokemones.addEventListener("click", (e) => {
+        const li = e.target.closest("li.pokemon-item");
+        if (li) {
+          document.querySelectorAll('.pokemon-item').forEach(item => {
+            item.classList.remove('pokemon-seleccionado');
+          });
+          li.classList.add('pokemon-seleccionado');
+
+          const id = li.dataset.id;
+          const nombre = li.querySelector('.card-text h3').textContent; 
+          infoPokemonPanel.setAttribute('data-nombre-pokemon', nombre); 
+
+          mostrarInfoPokemon(id);
+        }
+      });
+
+      async function mostrarInfoPokemon(id) {
+        infoContenidoPokemon.innerHTML = "<p class='cargador' style='color: black;'>Cargando...</p>";
+        
+        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        const datos = await res.json();
+        const tipo = datos.types.length > 0 ? datos.types[0].type.name : 'unknown';
+        const color = tipos[tipo] || tipos.unknown;
+
+        let spriteUrl = null;
+
+        // Priorizar sprites animados de generaciones más recientes
+        if (datos.sprites.versions && datos.sprites.versions['generation-v'] &&
+            datos.sprites.versions['generation-v']['black-white'] &&
+            datos.sprites.versions['generation-v']['black-white'].animated &&
+            datos.sprites.versions['generation-v']['black-white'].animated.front_default) {
+            spriteUrl = datos.sprites.versions['generation-v']['black-white'].animated.front_default;
+        }
+        // Luego, intentar con los sprites de showdown (pueden ser spritesheets o GIFs)
+        else if (datos.sprites.other && datos.sprites.other['showdown'] && datos.sprites.other['showdown'].front_default) {
+            spriteUrl = datos.sprites.other['showdown'].front_default;
+        }
+        // Si no hay animaciones, usar el artwork oficial de mayor calidad
+        else if (datos.sprites.other && datos.sprites.other['official-artwork'] && datos.sprites.other['official-artwork'].front_default) {
+            spriteUrl = datos.sprites.other['official-artwork'].front_default;
+        }
+        // Finalmente, si todo lo demás falla, usar el sprite frontal por defecto (estático)
+        else {
+            spriteUrl = datos.sprites.front_default;
+        }
+
+
+        const htmlEstadisticas = datos.stats
+          .map((s) => {
+            const porcentaje = Math.min(100, (s.base_stat / 255) * 100).toFixed(0); // Max stat value ~255
+            return `
+              <div>
+                <strong>${capitalizar(s.stat.name)}: ${s.base_stat}</strong>
+                <div style="background:#222;">
+                  <div style="width:${porcentaje}%;background:var(--color-estadistica);"></div>
+                </div>
+              </div>
+            `;
+          })
+          .join("");
+
+        const habilidades = datos.abilities
+          .map((a) => capitalizar(a.ability.name))
+          .join(", ");
+
+        infoContenidoPokemon.innerHTML = `
+          <img src="${spriteUrl}" alt="${datos.name}" />
+          <div><strong>Tipo(s):</strong> ${datos.types.map(t => capitalizar(t.type.name)).join(', ')}</div>
+          <div><strong>Altura:</strong> ${datos.height / 10} m</div>
+          <div><strong>Peso:</strong> ${datos.weight / 10} kg</div>
+          <div><strong>Habilidades:</strong> ${habilidades}</div>
+          <h3>Estadísticas Base:</h3>
+          ${htmlEstadisticas}
+        `;
+        infoContenidoPokemon.style.setProperty('--color-estadistica', color);
+      }
+
+      // Carga inicial por defecto
+      cargarPokemones(1, 151); 
+    </script>
+  </body>
+</html>
