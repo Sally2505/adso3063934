@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12 - Challenge Memory Game</title>
+    <link rel="stylesheet" href="master.css">
+</head>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f4;
+    margin: 20px;
+}
+
+#titulo {
+    text-align: center;
+    margin-bottom: 20px;
+font-size: 2em;
+    color: #ffffffba;
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-around;
+    width: 300px;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 70px); /* 🪄 Coincide con el nuevo tamaño de .card */
+    grid-gap: 15px;
+    perspective: 1000px;
+    margin-bottom: 20px;
+}
+
+.card {
+    width: 70px;              
+    height: 70px;            
+    border-radius: 50%;      
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    font-weight: bold;
+    color: white;
+}
+
+.card-back {
+    background-image: url('images/514d098deaa1bb437a234f71dd04c0b6.jpg');
+    background-size: cover;       /* Para que cubra todo el fondo */
+  background-repeat: no-repeat; /* Para que no se repita */
+  background-position: center;
+}
+
+.card-front {
+    background-color: #f0f0f0;
+    transform: rotateY(180deg);
+    overflow: hidden; /* Para que las imágenes se ajusten al círculo */
+}
+
+.card-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra el círculo */
+    border-radius: 50%;
+}
+
+.card.matched .card-back {
+    background-color: #ccc; /* Color cuando la carta está emparejada */
+}
+
+#reset-button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#reset-button:hover {
+    background-color: #0056b3;
+}
+
+</style>
+<body class="jQuery">
+    <nav class="nav">
+        <a href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+       </a>
+    </nav>
+    <main>
+        <header class="header1">
+            <h1>Challenge Memory Game</h1>
+            <h2>Build a memory game using jQuery</h2>
+        </header>
+        <section class="section">
+            <header>
+  <h1 id="titulo">Memory Card Game</h1>
+
+    <div class="game-info">
+        <p>Movimientos: <span id="moves">0</span></p>
+        <p>Tiempo: <span id="time">0s</span></p>
+    </div>
+
+    <div id="game-board"></div>
+
+    <button id="reset-button">Reiniciar Juego</button>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="script.js"></script>
+</section>
+        </section>
+    </main>
+
+
+    <script src="jsTodoList/jquery-3.7.1.min.js"></script>
+   <script>
+        $(document).ready(function() {
+    let images = [
+        'images/1.png',
+        'images/2.png',
+        'images/3.png',
+        'images/4.png',
+        'images/5.png',
+        'images/6.png'
+        // Agrega más rutas a tus imágenes aquí
+    ];
+
+    let cards = [];
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let moves = 0;
+    let timerInterval;
+    let seconds = 0;
+    let gameStarted = false;
+
+    // Función para mezclar un array
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    // Inicializar el juego
+    function initializeGame() {
+        cards = [];
+        flippedCards = [];
+        matchedPairs = 0;
+        moves = 0;
+        seconds = 0;
+        gameStarted = false;
+        $('#moves').text(moves);
+        $('#time').text('0s');
+        clearInterval(timerInterval);
+        $('#game-board').empty();
+
+        // Duplicar las imágenes para tener pares
+        let gameImages = [...images, ...images];
+        shuffle(gameImages);
+
+        // Crear las cartas
+        gameImages.forEach((image, index) => {
+            let card = `
+                <div class="card" data-image="${image}" data-id="${index}">
+                    <div class="card-face card-back"></div>
+                    <div class="card-face card-front">
+                        <img src="${image}" alt="card image">
+                    </div>
+                </div>
+            `;
+            cards.push(card);
+        });
+
+        $('#game-board').append(cards.join(''));
+
+        // Evento de clic en las cartas
+        $('.card').on('click', function() {
+            if ($(this).hasClass('flipped') || $(this).hasClass('matched')) {
+                return; // Ignorar si ya está volteada o emparejada
+            }
+
+            if (!gameStarted) {
+                gameStarted = true;
+                startTimer();
+            }
+
+            $(this).addClass('flipped');
+            flippedCards.push($(this));
+            moves++;
+            $('#moves').text(moves);
+
+            if (flippedCards.length === 2) {
+                setTimeout(checkMatch, 1000); // Esperar 1 segundo antes de comprobar
+            }
+        });
+    }
+
+    // Comprobar si las cartas coinciden
+    function checkMatch() {
+        let card1 = flippedCards[0];
+        let card2 = flippedCards[1];
+
+        if (card1.data('image') === card2.data('image')) {
+            // Coinciden
+            card1.addClass('matched');
+            card2.addClass('matched');
+            matchedPairs++;
+
+            if (matchedPairs === images.length) {
+                clearInterval(timerInterval);
+                setTimeout(() => {
+                    alert(`¡Felicidades! Has completado el juego en ${moves} movimientos y ${seconds} segundos.`);
+                }, 500);
+            }
+        } else {
+            // No coinciden, voltearlas de nuevo
+            card1.removeClass('flipped');
+            card2.removeClass('flipped');
+        }
+        flippedCards = []; // Reiniciar las cartas volteadas
+    }
+
+    // Iniciar el temporizador
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            seconds++;
+            $('#time').text(`${seconds}s`);
+        }, 1000);
+    }
+
+    // Botón de reiniciar juego
+    $('#reset-button').on('click', initializeGame);
+
+    // Inicializar el juego al cargar la página
+    initializeGame();
+});
+    </script>
+</body>
+</html>
