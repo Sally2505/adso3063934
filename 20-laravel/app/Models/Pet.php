@@ -20,4 +20,10 @@ class Pet extends Model
         'active',
         'status'
     ];
+
+    // RelationShip: pet HasOne Adoption
+    public function adoption()
+    {
+        return $this->belongsTo(adoption::class);
+    }
 }
