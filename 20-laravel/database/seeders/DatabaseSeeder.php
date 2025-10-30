@@ -21,11 +21,11 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        // $this->call([
-        //     UserSeeder::class,
-        //     PetSeeder::class
-        // ]);
-        // Pet::factory(100)->create();
-        User::factory(50)->create();
+        $this->call([
+            UserSeeder::class,
+            PetSeeder::class
+        ]);
+        Pet::factory(100)->create();
+        User::factory(20)->create();
 }
 }
