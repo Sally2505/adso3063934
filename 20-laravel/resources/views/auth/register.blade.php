@@ -1,52 +1,94 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+@extends('layouts.home')
+
+@section('title', 'Register: Larapets')
+
+@section('content')
+<section class=" bg-[#ffffffa4] rounded-lg md:w-[640px] w-[360px] p-8 flex flex-col gap-2 items-center justify-center">
+    <h1 class="flex gap-4 justify-center items-center text-4x1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-12" fill="currentColor" viewBox="0 0 256 256">
+            <path
+                d="M200,112a8,8,0,0,1-8,8H152a8,8,0,0,1,0-16h40A8,8,0,0,1,200,112Zm-8,24H152a8,8,0,0,0,0,16h40a8,8,0,0,0,0-16Zm40-80V200a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56ZM216,200V56H40V200H216Zm-80.26-34a8,8,0,1,1-15.5,4c-2.63-10.26-13.06-18-24.25-18s-21.61,7.74-24.25,18a8,8,0,1,1-15.5-4,39.84,39.84,0,0,1,17.19-23.34,32,32,0,1,1,45.12,0A39.76,39.76,0,0,1,135.75,166ZM96,136a16,16,0,1,0-16-16A16,16,0,0,0,96,136Z">
+            </path>
+        </svg>
+        Register
+    </h1>
+    <div class="card w-full"></div>
+    <method="POST" action="{{ route('register') }}" class="flex flex-col md:flex-row gap-4 mt-4">
+        <div class="w-full md:w-[320px]">
         @csrf
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        
+            {{-- document --}}
+            <label class="label">Document:</label>
+            <input type="text" class="input" placeholder="Document" name="document" value="{{ old('document') }}" />
+            @error('document')
+            <small class="text-error text-xs">{{ $message }}</small>
+            @enderror
+
+            {{-- full name --}}
+            <label class="label">Full name:</label>
+            <input type="text" class="input" placeholder="Full name" name="fullname" value="{{ old('email') }}" />
+            @error('fullname')
+            <small class="text-error text-xs">{{ $message }}</small>
+            @enderror
+
+            {{-- gender --}}
+            <label class="label">Gender:</label>
+            <select name="gender" class="input" aria-placeholder="Select...">
+                <option value="">Select...</option>
+                <option value="Female" @if(old('gender')=='Female' ) select @endif>Female</option>
+                <option value="" @if(old('gender')=='Male' ) select @endif>Male</option>
+            </select>
+            @error('password')
+            <small class="text-error text-xs">{{ $message }}</small>
+            @enderror
+
+            {{-- birthdate --}}
+            <label class="label">Birthdate:</label>
+            <input type="date" class="input" placeholder="Birthdate" name="birthdate" value="{{ old('birthdate') }}" />
+            @error('birthdate')
+            <small class="text-error text-xs">{{ $message }}</small>
+            @enderror
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        {{-- phone --}}
+        <label class="label">Phone:</label>
+        <input type="text" class="input" placeholder="3105024567" name="phone" value="{{ old('phone') }}" />
+        @error('phone')
+        <small class="text-error text-xs">{{ $message }}</small>
+        @enderror
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        {{-- Email --}}
+        <label class="label">Email:</label>
+        <input type="text" class="input" name="email" placeholder="Email" value="{{ old('email') }}" />
+        @error('email')
+        <small class="text-error text-xs">{{ $message }}</small>
+        @enderror
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+        {{-- Password --}}
+        <label class="label">Password:</label>
+        <input type="password" class="input" placeholder="Password" name="password" />
+        @error('password')
+        <small class="text-error text-xs">{{ $message }}</small>
+        @enderror
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        {{-- Password confirmation--}}
+        <label class="label">Password Confirmation:</label>
+        <input type="password" class="input" placeholder="Confirm your password" name="password_confirmation" />
+        @error('password_confirmation')
+        <small class="text-error text-xs">{{ $message }}</small>
+        @enderror
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+        <button class="btn btn-outline btn-info mt-4">Register</button>
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+        <p class="text-sm text-center mt-2">
+            <a href="{{ route('login') }}" class="link link-default">
+                Alredy registered?
             </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
+        </p>
+        </form>
         </div>
-    </form>
-</x-guest-layout>
+        </form>
+</section>
+@endsection
