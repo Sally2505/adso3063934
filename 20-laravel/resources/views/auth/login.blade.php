@@ -18,7 +18,7 @@
             <form method="POST" action="{{ route('login') }}" class="card-body">
                 @csrf
                 <label class="label">Email</label>
-                <input type="text" name="password" class="input" placeholder="Email" value="{{ old('email') }}"/>
+                <input type="text" name="email" class="input" placeholder="Email" value="{{ old('email') }}"/>
                 @error('email')
                 <small class="text-error text-xs">{{ $message }}</small>
                 @enderror

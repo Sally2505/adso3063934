@@ -3,9 +3,9 @@
 @section('title', 'welcome: Larapets')
 
 @section('content')
-<section class=" bg-[#ffffffa4] rounded-lg w-96 p-8 flex flex-col gap-2 items-center justify-center">
+<section class=" bg-[#0000007e] rounded-lg w-96 p-8 flex flex-col gap-2 items-center justify-center">
     <img src="{{ asset('images/logo.png')}}" width="260px" alt="logo">
-    <p class="text-black">Welcome to LaraPets, your
+    <p class="text-white">Welcome to LaraPets, your
         trusted companion for finding and adopting pets!
     </p>
     <div class="flex gap-2 mt-8">
