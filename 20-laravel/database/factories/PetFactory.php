@@ -187,7 +187,7 @@ class PetFactory extends Factory
             'Cleo',
         ];
 
-        $kind=fake()->randomElement(['Dog', 'Cat', 'Bird', 'Pig']);
+        $kind = fake()->randomElement(['Dog', 'Cat', 'Bird', 'Pig']);
         switch ($kind) {
             case 'Dog':
                 $breed = fake()->randomElement($dog_breeds);

@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Adoption;
-use App\Models\Pet;
+USE App\Models\Adoption;
+USE App\Models\pet;
 
 class AdoptionSeeder extends Seeder
 {
@@ -17,10 +17,11 @@ class AdoptionSeeder extends Seeder
         $adop = new Adoption;
         $adop->user_id = 2;
         $adop->pet_id = 4;
-        if($adop ->save()){
-            $pet = Pet::find(4);
-            $pet->status = 1;
+        if ($adop->save()) {
+            $pet = pet::find(4);
+            $pet->status = '1';
             $pet->save();
-        };
+        }
+        $adop->save();
     }
 }

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Pet;
+use App\Models\pet;
 
 class PetSeeder extends Seeder
 {
@@ -13,44 +13,45 @@ class PetSeeder extends Seeder
      */
     public function run(): void
     {
-        $pet = new Pet;
+        $pet = new pet;
         $pet->name = 'Firulais';
         $pet->kind = 'Dog';
-        $pet->weight = 7.6;
-        $pet->age = 2;
-        $pet->breed = 'French bulldog';
+        $pet->weight = '7.65';
+        $pet->age = '2';
+        $pet->breed = 'French Bulldog';
         $pet->location = 'Paris';
-        $pet->description = 'Black dog, so charming, lovely';
+        $pet->description = 'Black dog so charming, lovely';
         $pet->save();
 
-        $pet = new Pet;
-        $pet->name = 'Killer';
+        $pet = new pet;
         $pet->kind = 'Dog';
-        $pet->weight = 18;
-        $pet->age = 6;
-        $pet->breed = 'Cane Corso';
+        $pet->name = 'Killer';
+        $pet->weight = '18';
+        $pet->age = '6';
+        $pet->breed = 'Canne Corso';
         $pet->location = 'Milan';
-        $pet->description = 'Explosive & be careful with it, Danger';
+        $pet->description = 'Explosive & Hungry, be careful with it, Danger';
         $pet->save();
 
-        $pet = new Pet;
-        $pet->name = 'George';
-        $pet->kind = 'Pig';
-        $pet->weight = 30;
-        $pet->age = 4;
+
+        $pet = new pet;
+        $pet->kind = 'Michi';
+        $pet->name = 'Cat';
+        $pet->weight = '8';
+        $pet->age = '3';
+        $pet->breed = 'Bengali';
+        $pet->location = 'E.E.U.U';
+        $pet->description = 'It has an active, curious, affectionate and intelligent character, which is complemented by its energy and ability to climb.';
+        $pet->save();
+
+        $pet = new pet;
+        $pet->kind = 'Chanchi';
+        $pet->name = 'pig';
+        $pet->weight = '30';
+        $pet->age = '5';
         $pet->breed = 'Mini pig';
-        $pet->location = 'Wembley';
-        $pet->description = 'Cute & lovely mini pig, friendly with kids';
-        $pet->save();
-
-        $pet = new Pet;
-        $pet->name = 'Anubis';
-        $pet->kind = 'Cat';
-        $pet->weight = 10;
-        $pet->age = 3;
-        $pet->breed = 'Persa';
-        $pet->location = 'Cairo';
-        $pet->description = 'Majestic cat, calm and quiet';
+        $pet->location = 'Los Angeles';
+        $pet->description = 'intelligent and sociable,';
         $pet->save();
     }
 }

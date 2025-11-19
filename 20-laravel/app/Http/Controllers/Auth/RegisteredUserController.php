@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
@@ -29,15 +28,14 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // dd($request->all());
         $request->validate([
-            'document' => ['required', 'numeric', 'unique:'.User::class],
+            'document' => ['required', 'numeric', 'unique:' . User::class],
             'fullname' => ['required', 'string'],
             'gender' => ['required'],
             'birthdate' => ['required', 'date'],
-            'phone' => ['required'],
-            'email' => ['required', 'lowercase', 'email', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()]
+            'phone' => ['required', 'string'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'unique:' . User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
@@ -52,8 +50,10 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        // 🔹 No iniciar sesión automáticamente
+        // Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // 🔹 Redirigir al login con un mensaje
+        return redirect()->route('login')->with('status', 'Cuenta creada con éxito. Ahora puedes iniciar sesión.');
     }
 }

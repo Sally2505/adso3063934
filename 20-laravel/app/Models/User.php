@@ -26,7 +26,8 @@ class User extends Authenticatable
         'phone',
         'email',
         'password',
-        'role'
+        'active',
+        'role',
     ];
 
     /**
@@ -52,18 +53,10 @@ class User extends Authenticatable
         ];
     }
 
-
-    // RelationShip: User hasMany Adoptions
-    public function adoptions() {
+    // Relationships:
+    // user hasMany Adoptions
+    public function adoptions()
+    {
         return $this->hasMany(Adoption::class);
     }
-
-    // Scope: Search by fullname or email
-    public function scopeNames($users, $q) {
-        if(trim($q)) {
-            $users->where('fullname', 'LIKE', "%$q%")
-                  ->orWhere('email', 'LIKE', "%$q%");
-        }
-    }
-
 }

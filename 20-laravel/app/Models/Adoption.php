@@ -6,24 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Adoption extends Model
 {
-    /**
-     * 
-     * 
-     * @list list<string>
+     /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
      */
+
     protected $fillable = [
         'user_id',
-        'pet_id'
+        'pet_id',
+      
     ];
-    // RelationShip: Adoption belongs to User
+
+    // Relationships:
+    // adoption belongsTo User
     public function user()
     {
-        return $this->belongsTo(user::class);
+        return $this->belongsTo(User::class);
     }
 
-    // RelationShip: Adoption belongs to pet
+    // adoption belongsTo Pet
     public function pet()
     {
-        return $this->belongsTo(pet::class);
+        return $this->belongsTo(Pet::class);
     }
 }
