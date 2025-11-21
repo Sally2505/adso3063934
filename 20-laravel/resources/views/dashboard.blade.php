@@ -1,10 +1,10 @@
 @extends('layouts.dashboard')
-@section('title', 'Dashboard ADMIN: Larapets🐶')
+@section('title', 'Dashboard ADMIN: Larapets')
 
 @section('content')
 
 <h1
-    class="text-4xl font-bold text-black flex gap-2 items-center justify-center pb-4 border-b-2 border-neutral-200 mb-10">
+    class="text-4xl font-bold text-black flex gap-2 items-center justify-center pb-4 border-b-2 mb-10">
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="black" viewBox="0 0 256 256">
         <path
             d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z">
@@ -19,10 +19,10 @@
     {{-- Module User --}}
     <div class="card text-black bg[#0006] w-96 shadow-sm">
         <figure>
-            <img src="{{ asset('photos/users.png') }}" alt="Users" />
+            <img src="{{ asset('images/users.jpg') }}" alt="Users" />
         </figure>
 
-        <div class="card-body">
+        <div class="card-body bg-black/60">
             <h2 class="card-title">Module User</h2>
             <ul class="list bg[#0003] backdrop-blur-sm rounded-box shadow-md border border-[#0005]">
                 <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Stadistics:</li>
@@ -93,10 +93,10 @@
     {{-- Module Pets --}}
     <div class="card text-black bg[#0006] w-96 shadow-sm">
         <figure>
-            <img src="{{ asset('photos/pets.png') }}" alt="Users" />
+            <img src="{{ asset('images/pets.jpg') }}" alt="Users" />
         </figure>
 
-        <div class="card-body">
+        <div class="card-body bg-black/60">
             <h2 class="card-title">Module Pets</h2>
             <ul class="list bg[#0003] backdrop-blur-sm rounded-box shadow-md border border-[#0005]">
                 <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Stadistics:</li>
@@ -167,10 +167,10 @@
     {{-- --}}
     <div class="card text-black bg[#0006] w-96 shadow-sm">
         <figure>
-            <img src="{{ asset('photos/adop.png') }}" alt="Users" />
+            <img src="{{ asset('images/adop.jpeg') }}" alt="Users" />
         </figure>
 
-        <div class="card-body">
+        <div class="card-body bg-black/60">
             <h2 class="card-title">Module Adoptions</h2>
             <ul class="list bg[#0003] backdrop-blur-sm rounded-box shadow-md border border-[#0005]">
                 <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Stadistics:</li>

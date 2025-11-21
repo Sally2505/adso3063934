@@ -1,4 +1,4 @@
-div@extends('layouts.dashboard')
+@extends('layouts.dashboard')
 
 @section('title', 'Module Users: Larapets 🐈')
 
@@ -22,7 +22,8 @@ div@extends('layouts.dashboard')
 {{-- Botones --}}
 <div class="join mx-auto mb-6 flex flex-wrap gap-2 justify-center">
 
-    <a class="btn join-item bg-[#A8F1D0] text-[#2E6F56] border-none hover:bg-[#5EC9A5]" href="{{ url('user/create') }}">
+    <a class="btn join-item bg-[#A8F1D0] text-[#2E6F56] border-none hover:bg-[#5EC9A5]"
+        href="{{ url('users/create') }}">
         <svg xmlns="http://www.w3.org/2000/svg" class="size-5 md:size-6" fill="currentColor" viewBox="0 0 256 256">
             <path
                 d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H136v32a8,8,0,0,1-16,0V136H88a8,8,0,0,1,0-16h32V88a8,8,0,0,1,16,0v32h32A8,8,0,0,1,176,128Z">
@@ -73,12 +74,13 @@ div@extends('layouts.dashboard')
         </thead>
 
         <tbody class="text-gray-700 text-sm md:text-base">
+
             @foreach($users as $user)
             <tr class="border-b border-[#A8F1D080] hover:bg-[#A8F1D040] transition">
 
                 <td class="hidden md:table-cell">{{ $user->id }}</td>
 
-                {{-- ✔ FOTO OPTIMIZADA (sin pantalla blanca) --}}
+                {{-- FOTO FUNCIONANDO --}}
                 <td class="py-2 whitespace-nowrap">
                     <div class="avatar">
                         <div class="w-14 md:w-16 rounded-full bg-gray-200 overflow-hidden">
@@ -113,8 +115,7 @@ div@extends('layouts.dashboard')
                 {{-- Actions --}}
                 <td class="py-4 flex justify-center gap-4 md:gap-3 whitespace-nowrap">
 
-                    {{-- View --}}
-                    <a href="{{ url('user/'.$user->id) }}" class="text-[#5EC9A5] hover:text-[#2E6F56]">
+                    <a href="{{ url('users/'.$user->id) }}" class="text-[#5EC9A5] hover:text-[#2E6F56]">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-6" fill="currentColor"
                             viewBox="0 0 256 256">
                             <path
@@ -123,18 +124,17 @@ div@extends('layouts.dashboard')
                         </svg>
                     </a>
 
-                    {{-- Edit --}}
-                    <a href="{{ url('user/'.$user->id.'/edit') }}" class="text-[#5EC9A5] hover:text-[#2E6F56]">
+                    <a href="{{ url('users/'.$user->id.'/edit') }}" class="text-[#5EC9A5] hover:text-[#2E6F56]">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-6" fill="currentColor"
                             viewBox="0 0 256 256">
                             <path
-                                d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,9,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z">
+                                d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z">
                             </path>
                         </svg>
                     </a>
 
-                    {{-- Delete --}}
-                    <a href="javascript:;" class="text-red-400 hover:text-red-600">
+                    <a href="javascript:;" data-fullname="{{ $user->fullname }}"
+                        class="text-red-400 hover:text-red-600 btn-delete">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-6" fill="currentColor"
                             viewBox="0 0 256 256">
                             <path
@@ -142,7 +142,10 @@ div@extends('layouts.dashboard')
                             </path>
                         </svg>
                     </a>
-
+                    <form class="hidden" method="POST" action="{{ url('users/'.$user->id) }}">
+                        @csrf
+                        @method('delete')
+                    </form>
                 </td>
 
             </tr>
@@ -153,16 +156,18 @@ div@extends('layouts.dashboard')
                     {{ $users->links('layouts.pagination') }}
                 </td>
             </tr>
+
         </tbody>
     </table>
+
 </div>
 
-{{-- Modal --}}
-<button class="btn" onclick="modal_message-.showModal()">open modal</button>
+{{-- MODAL --}}
 <dialog id="modal_message" class="modal">
-    <div class="modal-box bg-success">
-        <h3 class="text-lg font-bold">Congratulations!</h3>
-        <div role="alert" class="alert alert-success">
+    <div class="modal-box">
+        <h3 class="font-bold text-lg">Congratulations!</h3>
+
+        <div role="alert" class="alert alert-success mt-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -171,19 +176,58 @@ div@extends('layouts.dashboard')
             <span>{{ session('message') }}</span>
         </div>
     </div>
+
     <form method="dialog" class="modal-backdrop">
         <button>close</button>
     </form>
 </dialog>
+
+<dialog id="modal_delete" class="modal">
+    <div class="modal-box">
+        <h3 class="font-bold text-lg">Are you Sure?</h3>
+
+        <div role="alert" class="alert alert-warning mt-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>you want to delete: <strong class="fullname"></strong></span>
+        </div>
+        <div class="flex gap-2 mt-4">
+            <form method="dialog">
+                <button class="btn btn-error btn-outline btn-sm">Cancel</button>
+            </form>
+            <button class="btn btn-success btn-outline btn-sm btn-confirm">Confirm</button>
+        </div>
+    </div>
+</dialog>
 @endsection
 
 @section('js')
+
 <script>
     $(document).ready(function (){
+        // Modal
         const modal_message = document.getElementById('modal_message')
             @if(session('message'))
             modal_message.showModal()
         @endif
+        // Delete User
+        $('table').on('click', '.btn-delete', function (){
+            $fullname = $(this).data('fullname')
+            $('.fullname').text($fullname)
+            $frm = $(this).next()
+            modal_delete.showModal()
+            // if(confirm('Are you sure?')){
+            //     alert($fullname + ' was deleted')
+            //     // $(this).next().submit()
+            // }
+        })
+        $('.btn-confirm').click(function (e) {
+            e.preventDefault()
+            $frm.submit()
+        })
     })
 </script>
 @endsection

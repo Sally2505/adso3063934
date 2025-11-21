@@ -17,7 +17,7 @@
         @foreach($pets as $pet)
         <div class="card card-side bg-base-100 shadow-md hover:shadow-lg transition-all duration-300">
             <figure class="object-cover">
-                <img src="{{ asset('photos/' . ($pet->image ? $pet->image : 'no-image.png')) }}" alt="{{ $pet->name }}"
+                <img src="{{ asset('images/' . ($pet->image ? $pet->image : 'no-image.png')) }}" alt="{{ $pet->name }}"
                     class="object-cover w-full h-full rounded-l-xl" />
             </figure>
 

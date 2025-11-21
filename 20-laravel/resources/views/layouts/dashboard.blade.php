@@ -14,9 +14,9 @@
 @php
 // Selección dinámica de imagen según el rol
 if (Auth::user()->role == 'Administrator') {
-$image = 'photos/bg-admin.png';
+$image = 'images/bg-admin.jpg';
 } else {
-$image = 'photos/bg-customer.png';
+$image = 'images/bg-customer.jpg';
 }
 @endphp
 

@@ -44,10 +44,10 @@
 @section('content')
 <section class="min-h-screen flex items-center justify-center px-4">
     <div
-        class="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl w-[420px] p-8 flex flex-col gap-6 items-center justify-center border border-gray-200 text-center">
+        class="bg-black/50 backdrop-blur-md rounded-3xl shadow-2xl w-[420px] p-8 flex flex-col gap-6 items-center justify-center text-center">
 
         {{-- Título --}}
-        <h1 class="flex gap-3 justify-center items-center text-3xl font-bold text-amber-700">
+        <h1 class="flex gap-3 justify-center items-center text-3xl font-bold text-pink-700">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256">
                 <path
                     d="M48,56V200a8,8,0,0,1-16,0V56a8,8,0,0,1,16,0Zm92,54.5L120,117V96a8,8,0,0,0-16,0v21L84,110.5a8,8,0,0,0-5,15.22l20,6.49-12.34,17a8,8,0,1,0,12.94,9.4l12.34-17,12.34,17a8,8,0,1,0,12.94-9.4l-12.34-17,20-6.49A8,8,0,0,0,140,110.5ZM246,115.64A8,8,0,0,0,236,110.5L216,117V96a8,8,0,0,0-16,0v21l-20-6.49a8,8,0,0,0-4.95,15.22l20,6.49-12.34,17a8,8,0,1,0,12.94,9.4l12.34-17,12.34,17a8,8,0,1,0,12.94-9.4l-12.34-17,20-6.49A8,8,0,0,0,246,115.64Z">
@@ -66,9 +66,9 @@
 
                     {{-- Email --}}
                     <div class="text-left">
-                        <label class="label text-gray-700 font-medium">Email</label>
+                        <label class="label text-white font-medium">Email</label>
                         <input type="email" name="email"
-                            class="input input-bordered w-full rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+                            class="input input-bordered w-full rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-pink-400"
                             placeholder="example@email.com" value="{{ old('email') }}" required />
                         @error('email')
                         <small class="badge badge-error mt-1">{{ $message }}</small>
@@ -77,9 +77,9 @@
 
                     {{-- Password --}}
                     <div class="text-left">
-                        <label class="label text-gray-700 font-medium">New Password</label>
+                        <label class="label text-white font-medium">New Password</label>
                         <input type="password" name="password"
-                            class="input input-bordered w-full rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+                            class="input input-bordered w-full rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-pink-400"
                             placeholder="Enter new password" required />
                         @error('password')
                         <small class="badge badge-error mt-1">{{ $message }}</small>
@@ -88,9 +88,9 @@
 
                     {{-- Confirmación --}}
                     <div class="text-left">
-                        <label class="label text-gray-700 font-medium">Confirm Password</label>
+                        <label class="label text-white font-medium">Confirm Password</label>
                         <input type="password" name="password_confirmation"
-                            class="input input-bordered w-full rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+                            class="input input-bordered w-full rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-pink-400"
                             placeholder="Confirm password" required />
                         @error('password_confirmation')
                         <small class="badge badge-error mt-1">{{ $message }}</small>
@@ -99,7 +99,7 @@
 
                     {{-- Botón --}}
                     <button type="submit"
-                        class="btn btn-outline btn-info mt-4 w-full font-semibold rounded-xl shadow-md hover:bg-amber-500 hover:text-white transition-all duration-200">
+                        class="btn btn-outline btn-secondary mt-4 w-full font-semibold rounded-xl shadow-md text-white transition-all duration-200">
                         Reset Password
                     </button>
 

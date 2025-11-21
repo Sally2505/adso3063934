@@ -11,7 +11,7 @@
 </head>
 
 <body
-    class="min-h-[100dvh] bg-[url({{ asset('photos/bg-welcome.png') }})] bg-center bg-cover w-full flex flex-col gap-4 items-center justify-center p-8">
+    class="min-h-[100dvh] bg-[url({{ asset('images/bg-welcome.png') }})] bg-center bg-cover w-full flex flex-col gap-4 items-center justify-center p-8">
     @yield('content')
 
 </body>
