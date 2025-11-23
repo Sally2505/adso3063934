@@ -3,9 +3,9 @@
 @section('title', 'Show user: Larapets')
 
 @section('content')
-<h1 class="text-3xl md:text-4xl font-extrabold text-[#5EC9A5] flex items-center gap-3 justify-center pb-6 mb-10">
+<h1 class="text-4xl font-bold text-white flex gap-2 items-center justify-center pb-4 mb-10">
 
-    <span class="p-3 bg-[#A8F1D0] rounded-2xl shadow-sm flex items-center justify-center">
+    <span class="p-3 rounded-2xl flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" class="md:w-[34px] md:h-[34px]"
             fill="currentColor" viewBox="0 0 256 256">
             <path

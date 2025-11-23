@@ -138,8 +138,8 @@
     <!-- PERFIL -->
     <div class="navbar-end">
         <div class="avatar">
-            <div class="mask mask-squircle w-10 border-2 border-black shadow">
-                <img src="{{ asset('images/' . Auth::user()->photo) }}" alt="">
+            <div class="w-10 rounded-full">
+                <img src="{{ asset('images/' . Auth::user()->photo) }}" />
             </div>
         </div>
 

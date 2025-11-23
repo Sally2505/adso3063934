@@ -12,12 +12,11 @@
 
     {{-- TEXTO DE BIENVENIDA --}}
     <p class="text-white/70 text-sm font-medium leading-relaxed">
-        ¡Hola y bienvenidos a <span class="text-pink-300 font-semibold">Larapets</span>!<br><br>
-        Nos alegra tenerte aquí, en una comunidad dedicada a dar una segunda oportunidad.<br><br>
-        En <span class="font-semibold text-pink-400">Larapets</span> creemos que cada animal merece un hogar lleno de
-        amor.
-        Explora, conoce a los peluditos que esperan una familia,
-        ¡y prepárate para cambiar una vida a través de la adopción responsable!
+        Hello and welcome to <span class="text-pink-300 font-semibold">Larapets!</span>!<br><br>
+        We’re happy to have you here, in a community dedicated to giving second chances.<br><br>
+        At <span class="font-semibold text-pink-400">Larapets</span> we believe every animal deserves a loving home.
+        Explore, meet the furry friends waiting for a family, and get ready to change a life through responsible
+        adoption!
     </p>
 
     {{-- BOTONES --}}
