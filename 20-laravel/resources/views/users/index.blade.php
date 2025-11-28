@@ -5,7 +5,7 @@
 @section('content')
 
 {{-- Título --}}
-<h1 class="text-4xl font-bold text-white bg-black/70 flex gap-2 items-center justify-center pb-4 border-b-2 mb-10">
+<h1 class="text-4xl font-bold text-black flex gap-2 items-center justify-center pb-4 border-b-2 mb-10">
 
     <span class="p-3 rounded-2xl shadow-sm flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 256 256">
@@ -41,10 +41,19 @@
         Export Excel
     </a>
 
-    <a class="btn join-item bg-[#00000091] text-[#ffffff] border-none hover:bg-[#760f419d]"
-        href="{{ url('import/users') }}">
-        Import
-    </a>
+    <form class="join-item" action="{{ url('import/users') }}" method="post" enctype="multipart/form-data">
+        @csrf
+        <input type="file" name="file" id="file" class="hidden"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+        <button type="button" class="btn btn-outline text-white hover:bg-[#fff6] hover:text-white btn-import">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-6" fill="currentColor" viewBox="0 0 256 256">
+                <path
+                    d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-42.34-77.66a8,8,0,0,1-11.32,11.32L136,139.31V184a8,8,0,0,1-16,0V139.31l-10.34,10.35a8,8,0,0,1-11.32-11.32l24-24a8,8,0,0,1,11.32,0Z">
+                </path>
+            </svg>
+            <span class="hidden md:inline">Import</span>
+        </button>
+    </form>
 </div>
 
 {{-- Search --}}
@@ -56,7 +65,7 @@
             <path d="m21 21-4.3-4.3"></path>
         </g>
     </svg>
-    <input type="search" placeholder="Search..." name="qsearch" class="text-white w-full" />
+    <input id="qsearch" type="search" placeholder="Search..." name="qsearch" class="text-white w-full" />
 </label>
 
 {{-- Tabla --}}
@@ -75,7 +84,7 @@
             </tr>
         </thead>
 
-        <tbody class="text-white text-sm md:text-base">
+        <tbody class="text-white text-sm md:text-base datalist">
 
             @foreach($users as $user)
             <tr class="border-b border-[#f50b6c70] hover:bg-[#ffa6cb70] transition">
@@ -231,6 +240,56 @@
             e.preventDefault()
             $frm.submit()
         })
-    })
+        // Search ---------------------------
+            function debounce(func, wait) {
+                let timeout
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout)
+                        func(...args)
+                    };
+                    clearTimeout(timeout)
+                    timeout = setTimeout(later, wait)
+                }
+            }
+            const search = debounce(function(query) {
+                
+                $token = $('input[name=_token]').val()
+                
+                $.post("search/users", {'q': query, '_token': $token},
+                    function (data) {
+                        $('.datalist').html(data).hide().fadeIn(1000)
+                    }
+                )
+            }, 500)
+            $('body').on('input', '#qsearch', function(event) {
+                event.preventDefault()
+                const query = $(this).val()
+                
+                $('.datalist').html(`<tr>
+                                        <td colspan="7" class="text-center py-18">
+                                            <span class="loading loading-spinner loading-xl"></span>
+                                        </td>
+                                    </tr>`)
+                
+                if(query != ''){
+                    search(query)
+                }else{
+                    setTimeout(() => {
+                         window.location.replace('users')
+                    }, 500);   
+                   
+                }
+                
+            })
+
+            //Import
+            $('.btn-import').click(function(e){
+                $('#file').click()
+            })
+            $('#file').change(function(e){
+                $(this).parent().submit()
+            })    
+        })
 </script>
 @endsection

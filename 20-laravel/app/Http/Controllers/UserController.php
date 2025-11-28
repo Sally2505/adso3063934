@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
+use App\Imports\UsersImport;
 
 class UserController extends Controller
 {
@@ -31,25 +35,27 @@ class UserController extends Controller
             'password' => ['required', 'confirmed'],
         ]);
 
+        // SUBIR FOTO
         $photo = null;
-
         if ($request->hasFile('photo')) {
             $photo = time() . '.' . $request->photo->extension();
             $request->photo->move(public_path('images'), $photo);
         }
 
-        $user = new User;
-        $user->document = $request->document;
-        $user->fullname = $request->fullname;
-        $user->gender = $request->gender;
+        // CREAR USUARIO
+        $user = new User();
+        $user->document  = $request->document;
+        $user->fullname  = $request->fullname;
+        $user->gender    = $request->gender;
         $user->birthdate = $request->birthdate;
-        $user->photo = $photo;
-        $user->phone = $request->phone;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
+        $user->photo     = $photo;
+        $user->phone     = $request->phone;
+        $user->email     = $request->email;
+        $user->password  = bcrypt($request->password);
 
         if ($user->save()) {
-            return redirect('users')->with('message', 'The user: ' . $user->fullname . ' was successfully added!');
+            return redirect('users')
+                ->with('message', 'The user: ' . $user->fullname . ' was successfully added.');
         }
     }
 
@@ -64,61 +70,100 @@ class UserController extends Controller
     }
 
     public function update(Request $request, User $user)
-    { {
-            //
-            $validated = $request->validate([
-                'document'  => ['required', 'numeric', 'unique:' . User::class . ',document,' . $request->id],
-                'fullname'  => ['required', 'string'],
-                'gender'    => ['required'],
-                'birthdate' => ['required', 'date'],
-                'phone'     => ['required'],
-                'email'     => ['required', 'lowercase', 'email', 'unique:' . User::class . ',email,' . $request->id],
-            ]);
+    {
+        $validation = $request->validate([
+            'document' => ['required', 'numeric', 'unique:' . User::class . ',document,' . $user->id],
+            'fullname' => ['required', 'string'],
+            'gender' => ['required'],
+            'birthdate' => ['required', 'date'],
+            'phone' => ['required', 'string'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'unique:' . User::class . ',email,' . $user->id],
+        ]);
 
-            if ($validated) {
-                //dd($request->all());
-                if ($request->hasFile('photo')) {
-                    $photo = time() . '.' . $request->photo->extension();
-                    $request->photo->move(public_path('images'), $photo);
-                    if ($request->originphoto != 'no-photo.png') {
-                        unlink(public_path('images/') . $request->originphoto);
-                    }
-                } else {
-                    $photo = $request->originphoto;
-                }
+        // FOTO ACTUAL
+        $photo = $user->photo;
 
-                $user->document  = $request->document;
-                $user->fullname  = $request->fullname;
-                $user->gender    = $request->gender;
-                $user->birthdate = $request->birthdate;
-                $user->photo     = $photo;
-                $user->phone     = $request->phone;
-                $user->email     = $request->email;
+        // SI SUBE UNA NUEVA FOTO
+        if ($request->hasFile('photo')) {
 
-                if ($user->save()) {
-                    return redirect('users')->with('message', 'The user: ' . $user->fullname . ' was successfully edited!');
+            // 1. SUBIR NUEVA FOTO
+            $photo = time() . '.' . $request->photo->extension();
+            $request->photo->move(public_path('images'), $photo);
+
+            // 2. ELIMINAR FOTO ANTERIOR
+            if ($user->photo && $user->photo !== 'no-photo.png') {
+                $oldPath = public_path('images/' . $user->photo);
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
                 }
             }
         }
+
+        // ACTUALIZAR DATOS
+        $user->document  = $request->document;
+        $user->fullname  = $request->fullname;
+        $user->gender    = $request->gender;
+        $user->birthdate = $request->birthdate;
+        $user->phone     = $request->phone;
+        $user->email     = $request->email;
+        $user->photo     = $photo;
+
+        if ($user->save()) {
+            return redirect('users')
+                ->with('message', 'The user: ' . $user->fullname . ' was successfully edited.');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(User $user)
     {
-        
-        if($user->delete()) {
-            if($user->photo != 'no-photo.png') {
-                unlink(public_path('images/').$user->photo);
+        if ($user->photo != 'no-photo.png') {
+            $path = public_path('images/' . $user->photo);
+            if (file_exists($path)) {
+                unlink($path);
             }
-            return redirect('users')->with('message', 'The user: '.$user->fullname.' was successfully deleted!');
+        }
+
+        if ($user->delete()) {
+            return redirect('users')->with('message',
+                'The user: ' . $user->fullname . ' was successfully deleted!'
+            );
         }
     }
 
+    // SEARCH by Scope
     public function search(Request $request)
     {
-        $users = User::names($request->q)->paginate(10);
+        $users = User::name($request->q)->paginate(20);
         return view('users.search')->with('users', $users);
+    }
+
+    // PDF EXPORT
+    public function pdf()
+    {
+        try {
+
+            $users = User::all();
+
+            $pdf = PDF::loadView('users.pdf', compact('users'))
+                    ->setPaper('A4', 'landscape');
+
+            return $pdf->download('allusers.pdf');
+
+        } catch (\Exception $e) {
+            return "PDF ERROR: " . $e->getMessage();
+        }
+    }
+
+    // EXCEL EXPORT
+    public function excel()
+    {
+        return Excel::download(new UsersExport, 'allusers.xlsx');
+    }
+
+    // EXCEL IMPORT
+    public function import(Request $request) {
+        $file = $request->file('file');
+        Excel::import(new UsersImport, $file);
+        return redirect()->back()->with('message', 'Users imported successful!');
     }
 }
