@@ -1,8 +1,8 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PetController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,12 +14,13 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 
+    // Rutas CRUD automáticas
     Route::resources([
         'users' => UserController::class,
-        // 'pets' => PetController::class,
-        // 'adoptions' => AdoptionController::class,
+        'pets' => PetController::class,
     ]);
 
+    // Extras
     Route::get('hello', function () {
         return "<h1>Hello folks, Have a nice day 😍</h1>";
     });
@@ -28,14 +29,13 @@ Route::middleware('auth')->group(function () {
         return "<h1>Hello: " . request()->name . "</h1>";
     });
 
+    // Utilities
     Route::get('show/pets', function () {
         $pets = App\Models\Pet::all();
-        dd($pets->toArray());
     });
 
     Route::get('show/pet/{id}', function () {
         $pet = App\Models\Pet::find(request()->id);
-        dd($pet->toArray());
     });
 
     Route::get('challenge', function () {
@@ -54,11 +54,11 @@ Route::middleware('auth')->group(function () {
 
         foreach ($users as $user) {
             $code .= ($user->id % 2 == 0) ? "<tr style='background: #ddd'>" : "<tr>";
-            $code .= "<td $stylesTD>" . $user->id . "</td>";
+            $code .= "<td $stylesTD>{$user->id}</td>";
             $code .= "<td $stylesTD><img src='" . asset('images/' . $user->photo) . "' width='40px'></td>";
-            $code .= "<td $stylesTD>" . $user->fullname . "</td>";
+            $code .= "<td $stylesTD>{$user->fullname}</td>";
             $code .= "<td $stylesTD>" . Carbon\Carbon::parse($user->birthdate)->age . " years old</td>";
-            $code .= "<td $stylesTD>" . $user->created_at->diffForHumans() . "</td>";
+            $code .= "<td $stylesTD>{$user->created_at->diffForHumans()}</td>";
             $code .= "</tr>";
         }
 
@@ -75,17 +75,21 @@ Route::middleware('auth')->group(function () {
         return view('view-pet')->with('pet', $pet);
     });
 
-    //Search 
+    // Search users
     Route::post('search/users', [UserController::class, 'search']);
 
-
+    // Export users
     Route::get('export/users/pdf', [UserController::class, 'pdf']);
     Route::get('export/users/excel', [UserController::class, 'excel']);
 
-    // Import
+    // Import users
     Route::get('import/users/excel', [UserController::class, 'import']);
-    
 
+    Route::get('export/pet/excel', [PetController::class, 'excel']); // Nueva ruta
+    Route::get('export/pet/pdf', [PetController::class, 'pdf']);   // Nueva ruta
+
+    Route::post('search/pets', [PetController::class, 'search']);
 });
 
+// AUTH
 require __DIR__ . '/auth.php';

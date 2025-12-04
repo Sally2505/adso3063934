@@ -153,7 +153,7 @@
             </ul>
             <div class="card-actions justify-end">
                 <a class="btn btn-outline hover:bg-[#fff6] hover:backdrop-blur-sm hover:text-black mt-3"
-                    href="{{ url('users') }}">
+                    href="{{ url('pets') }}">
                     Enter
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-6" fill="currentColor" viewBox="0 0 256 256">
                         <path
