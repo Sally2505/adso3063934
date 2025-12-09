@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Adoption;
 
-class pet extends Model
+class Pet extends Model
 {
-   
     use HasFactory;
 
     /**
@@ -15,7 +15,6 @@ class pet extends Model
      *
      * @var list<string>
      */
-
     protected $fillable = [
         'name',
         'image',
@@ -29,10 +28,11 @@ class pet extends Model
         'status',
     ];
 
-    
-    // Relationships:
-    // pet hasOne Adoptions
-    public function adoptions()
+    /**
+     * Relationship:
+     * A pet has one adoption record
+     */
+    public function adoption()
     {
         return $this->hasOne(Adoption::class);
     }

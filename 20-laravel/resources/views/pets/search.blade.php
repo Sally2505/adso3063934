@@ -8,29 +8,31 @@
     <td class="py-2 whitespace-nowrap">
         <div class="avatar">
             <div class="w-14 md:w-16 rounded-full bg-gray-200 overflow-hidden">
-                {{-- Se cambia $user->photo a $pet->image --}}
                 <img src="{{ asset('images/'.$pet->image) }}" loading="lazy" width="64" height="64"
                     class="object-cover w-full h-full transition-opacity duration-300" />
             </div>
         </div>
     </td>
 
-    {{-- Name (Reemplaza a fullname) --}}
     <td class="py-3 font-medium text-white whitespace-nowrap">
         {{ $pet->name }}
     </td>
 
-    {{-- Kind (Reemplaza a document) --}}
     <td class="hidden md:table-cell">{{ $pet->kind }}</td>
+    <td class="hidden md:table-cell">{{ $pet->weight }} kg</td>
+    <td class="hidden md:table-cell">{{ $pet->age }}</td>
+    <td class="hidden md:table-cell">{{ $pet->breed }}</td>
 
-    {{-- Breed (Nuevo campo para agregar más información relevante a la mascota) --}}
     <td class="hidden md:table-cell">
-        <div class="badge bg-[#8c0bf550] text-white border-none">{{ $pet->breed }}</div>
+        @if ($pet->status)
+        <div class="badge bg-[#07e91e60] text-white border-none">Adopted</div>
+        @else
+        <div class="badge bg-[#e9d50760] text-white border-none">Waiting</div>
+        @endif
     </td>
 
-    {{-- Active (Se mantiene la lógica, cambiando $user a $pet) --}}
     <td class="hidden md:table-cell">
-        @if ($pet->active == 1)
+        @if ($pet->active)
         <div class="badge bg-[#07e91e60] text-white border-none">Active</div>
         @else
         <div class="badge bg-[#e9070760] text-white border-none">Inactive</div>
@@ -40,8 +42,6 @@
     {{-- Actions --}}
     <td class="py-4 flex justify-center gap-4 md:gap-3 whitespace-nowrap">
 
-        {{-- View (Mostrar detalles de la mascota) --}}
-        {{-- Se cambia la URL a 'pets/' --}}
         <a href="{{ url('pets/'.$pet->id) }}" class="text-[#ffffff] hover:text-[#a62874]">
             <svg xmlns="http://www.w3.org/2000/svg" class="size-6" fill="currentColor" viewBox="0 0 256 256">
                 <path
@@ -50,8 +50,6 @@
             </svg>
         </a>
 
-        {{-- Edit (Editar mascota) --}}
-        {{-- Se cambia la URL a 'pets/' --}}
         <a href="{{ url('pets/'.$pet->id.'/edit') }}" class="text-[#ffffff] hover:text-[#a62874]">
             <svg xmlns="http://www.w3.org/2000/svg" class="size-6" fill="currentColor" viewBox="0 0 256 256">
                 <path
@@ -60,18 +58,13 @@
             </svg>
         </a>
 
-        {{-- Delete (Eliminar mascota) --}}
-        {{-- Se cambia el 'data-fullname' por 'data-name' y la clase se mantiene para el JS del modal --}}
-        <a href="javascript:;" data-name="{{ $pet->name }}"
-            class="text-[#ffffff] hover:text-[#a62874] btn-delete">
+        <a href="javascript:;" data-fullname="{{ $pet->name }}" class="text-[#ffffff] hover:text-[#a62874] btn-delete">
             <svg xmlns="http://www.w3.org/2000/svg" class="size-6" fill="currentColor" viewBox="0 0 256 256">
                 <path
                     d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z">
                 </path>
             </svg>
         </a>
-        {{-- Formulario de eliminación --}}
-        {{-- Se cambia la URL a 'pets/' --}}
         <form class="hidden" method="POST" action="{{ url('pets/'.$pet->id) }}">
             @csrf
             @method('delete')

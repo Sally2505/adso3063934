@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Adoption extends Model
 {
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -15,7 +15,7 @@ class Adoption extends Model
     protected $fillable = [
         'user_id',
         'pet_id',
-      
+
     ];
 
     // Relationships:
@@ -29,5 +29,15 @@ class Adoption extends Model
     public function pet()
     {
         return $this->belongsTo(Pet::class);
+    }
+
+    
+    // Scopes Names
+    public function scopeName($adoptions, $q)
+    {
+        if (trim($q)) {
+            $adoptions->where('user_id', 'LIKE', "%$q%")
+                ->orWhere('pet_id', 'LIKE', "%$q%");
+        }
     }
 }
