@@ -6,7 +6,7 @@
 
 <header class="mb-10 pt-4 border-b border-gray-700/50">
     <h1 class="text-4xl text-[#000000] tracking-tight flex items-center gap-4 justify-center pb-6">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[currentColor]" viewBox="0 0 256 256">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="currentColor" viewBox="0 0 256 256">
             <path fill="currentColor"
                 d="M223,57a58.07,58.07,0,0,0-81.92-.1L128,69.05,114.91,56.86A58,58,0,0,0,33,139l89.35,90.66a8,8,0,0,0,11.4,0L223,139a58,58,0,0,0,0-82Zm-11.35,70.76L128,212.6,44.3,127.68a42,42,0,0,1,59.4-59.4l.2.2,18.65,17.35a8,8,0,0,0,10.9,0L152.1,68.48l.2-.2a42,42,0,1,1,59.36,59.44Z">
             </path>
@@ -38,50 +38,50 @@
         </ul>
     </div>
 
-    <div class="bg-[#00000089] p-8 md:p-12 rounded-3xl shadow-2xl max-w-4xl mx-auto border border-gray-700">
+    <div class="bg-[#0000009c] p-8 md:p-12 rounded-3xl shadow-2xl max-w-4xl mx-auto border border-gray-700">
 
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12">
 
             {{-- COL 1: MASCOTA --}}
             <div class="lg:col-span-1 flex flex-col items-center">
-                <h3 class="text-2xl font-bold text-[#ffffff] mb-4 border-b pb-2 border-pink w-full text-center">
-                    Pet</h3>
+                <h3 class="text-2xl font-bold text-[#ffffff] mb-4 border-b pb-2 0 w-full text-center">
+                    PET</h3>
 
                 <div
-                    class="relative w-full max-w-xs aspect-square rounded-full overflow-hidden shadow-xl border-4 border-pink">
+                    class="relative w-full max-w-xs aspect-circle rounded-full overflow-hidden shadow-xl">
                     <img src="{{ asset('images/' . $adoption->pet->image) }}" alt="Foto de {{ $adoption->pet->name }}"
                         class="object-cover w-full h-full transform hover:scale-105 transition duration-500" />
                 </div>
 
-                <div class="mt-6 p-4 bg-[#111827] rounded-xl w-full text-sm text-gray-300 border border-gray-700">
-                    <p class="font-bold text-[#A8F1D0] mb-2">Descripción:</p>
+                <div class="mt-6 p-4 bg-[#4b02198d] rounded-xl w-full text-sm text-gray-300 border border-black">
+                    <p class="font-bold text-[#ffffff] mb-2">Description:</p>
                     <p>{{ $adoption->pet->description }}</p>
                 </div>
             </div>
 
             {{-- COL 2: ADOPTANTE --}}
             <div class="lg:col-span-1 flex flex-col items-center">
-                <h3 class="text-2xl font-bold text-[#5EC9A5] mb-4 border-b pb-2 border-gray-700/50 w-full text-center">
-                    User</h3>
+                <h3 class="text-2xl font-bold text-[#ffffff] mb-4 border-b pb-2 w-full text-center">
+                    USER</h3>
 
                 <div
-                    class="relative w-36 h-36 rounded-full overflow-hidden shadow-xl border-4 border-[#5EC9A5]/30 mb-6">
+                    class="relative w-36 h-36 rounded-full overflow-hidden shadow-xl mb-6">
                     <img src="{{ asset('images/' . $adoption->user->photo) }}"
                         alt="Foto de {{ $adoption->user->fullname }}" class="object-cover w-full h-full" />
                 </div>
 
-                <div class="w-full space-y-3 text-white text-base p-4 bg-[#111827] rounded-xl border border-gray-700">
+                <div class="w-full space-y-3 text-white/60 text-base p-4 bg-[#4b02198d] rounded-xl border border-black">
                     <p>
-                        <span class="text-[#A8F1D0] font-semibold w-24 inline-block">Nombre:</span>
+                        <span class="text-[#ffffff] font-semibold w-24 inline-block">Name:</span>
                         <span class="font-medium">{{ $adoption->user->fullname }}</span>
                     </p>
                     <p>
-                        <span class="text-[#A8F1D0] font-semibold w-24 inline-block">Email:</span>
+                        <span class="text-[#ffffff] font-semibold w-24 inline-block">Email:</span>
                         <span class="font-medium">{{ $adoption->user->email }}</span>
                     </p>
                     <p>
-                        <span class="text-[#A8F1D0] font-semibold w-24 inline-block">Teléfono:</span>
+                        <span class="text-[#ffffff] font-semibold w-24 inline-block">Phone:</span>
                         <span class="font-medium">{{ $adoption->user->phone }}</span>
                     </p>
                 </div>
@@ -89,25 +89,25 @@
 
             {{-- COL 3: DATOS Y ESTADOS --}}
             <div class="lg:col-span-1 space-y-6">
-                <h3 class="text-2xl font-bold text-white mb-4 border-b pb-2 border-gray-700/50 w-full text-center">
-                    Datos Adicionales</h3>
+                <h3 class="text-2xl font-bold text-white mb-4 border-b pb-2 w-full text-center">
+                    Aditional info</h3>
 
                 <div class="space-y-3 text-white text-base">
-                    <p><span class="text-[#A8F1D0] font-semibold w-24 inline-block">Especie:</span>
+                    <p><span class="text-[#ff5188] font-semibold w-24 inline-block">Name:</span>
                         {{ $adoption->pet->kind }}</p>
-                    <p><span class="text-[#A8F1D0] font-semibold w-24 inline-block">Raza:</span>
+                    <p><span class="text-[#ff5188] font-semibold w-24 inline-block">Kind:</span>
                         {{ $adoption->pet->breed }}</p>
-                    <p><span class="text-[#A8F1D0] font-semibold w-24 inline-block">Edad:</span>
+                    <p><span class="text-[#ff5188] font-semibold w-24 inline-block">Age:</span>
                         {{ $adoption->pet->age }} años</p>
-                    <p><span class="text-[#A8F1D0] font-semibold w-24 inline-block">Ubicación:</span>
+                    <p><span class="text-[#ff5188] font-semibold w-24 inline-block">Location:</span>
                         {{ $adoption->pet->location }}</p>
                 </div>
 
                 {{-- ESTADO DE ADOPCIÓN --}}
-                <div class="space-y-3 p-4 bg-[#111827] rounded-xl border border-gray-700">
+                <div class="space-y-3 p-4 bg-[#4b02198d] rounded-xl border border-black">
 
                     <p>
-                        <span class="text-[#A8F1D0] font-bold block mb-1">Estatus de Adopción:</span>
+                        <span class="text-[#ffffff] font-bold block mb-1">Adoption status:</span>
                         {!! $adoption->pet->status
                         ? '<span
                             class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-green-900/50 text-green-400 border border-green-700">✅
@@ -119,7 +119,7 @@
 
                     {{-- ESTADO DE PUBLICACIÓN --}}
                     <p>
-                        <span class="text-[#A8F1D0] font-bold block mb-1">Estado de Publicación:</span>
+                        <span class="text-[#ffffff] font-bold block mb-1">Publication status:</span>
 
                         @if($adoption->pet->status)
                         <span
@@ -134,13 +134,13 @@
                         @endif
                     </p>
 
-                    <div class="pt-4 border-t border-gray-700/50 text-sm text-gray-400">
+                    <div class="pt-4 border-t border-white text-sm text-white/50">
                         <p>
-                            <span class="text-[#5EC9A5] font-semibold mr-2">Fecha de Adopción:</span>
+                            <span class="text-[#ffffff] font-semibold mr-2">Adoption date:</span>
                             {{ $adoption->created_at->format('d/m/Y H:i') }}
                         </p>
                         <p>
-                            <span class="text-[#5EC9A5] font-semibold mr-2">Última Actualización (Mascota):</span>
+                            <span class="text-[#ffffff] font-semibold mr-2">Last update (Pet):</span>
                             {{ $adoption->pet->updated_at->format('d/m/Y H:i') }}
                         </p>
                     </div>

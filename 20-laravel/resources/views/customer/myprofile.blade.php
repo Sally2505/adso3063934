@@ -1,24 +1,25 @@
 @extends('layouts.dashboard')
 
-@section('title', 'My profile')
+@section('title', 'Edit User: Larapets')
 
 @section('content')
-<h1 class="text-3xl md:text-4xl text-black flex items-center gap-3 justify-center pb-6 mb-10">
 
+<h1 class="text-3xl md:text-4xl text-black flex items-center gap-3 justify-center pb-6 mb-10">
     <span class="p-3 flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="size-12" fill="currentColor" viewBox="0 0 256 256">
             <path
-                d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM51.31,160,136,75.31,152.69,92,68,176.68ZM48,179.31,76.69,208H48Zm48,25.38L79.31,188,164,103.31,180.69,120Zm96-96L147.31,64l24-24L216,84.68Z">
+                d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z">
             </path>
         </svg>
     </span>
-    My profile
+    My Profile
 </h1>
+
 {{-- Breadcrumbs --}}
-<div class="breadcrumbs text-sm text-black mb-6">
+<div class="breadcrumbs text-sm text-black dark:text-black mb-6">
     <ul>
         <li>
-            <a href="{{ url('dashboard') }}">
+            <a href="{{ url('dashboard') }}" class="flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
@@ -26,50 +27,53 @@
                 Dashboard
             </a>
         </li>
+
         <li>
-            <a href="{{ url('users') }}">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
-                </svg>
-                User Module
-            </a>
-        </li>
-        <li>
-            <span class="inline-flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+            <span class="inline-flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-6" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                        d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z">
                     </path>
                 </svg>
-                Update User
+                My Profile
             </span>
         </li>
     </ul>
 </div>
 
-<form method="POST" action="{{ url('myprofile/') }}" class="max-w-4xl mx-auto">
+{{-- Formulario --}}
+<form method="POST" action="{{ url('myprofile/'.$user->id) }}" class="w-full max-w-xl mx-auto"
+    enctype="multipart/form-data">
     @csrf
     @method('PUT')
-    <div class="card bg-black/40 text-black/50 p-10 w-full mx-auto">
-    <div class="max-w-4xl mx-auto">
+
+    {{-- Foto centrada en la parte superior --}}
+    <div class="flex justify-center mb-6">
         <div
-            class="avatar flex flex-col gap-2 items-center justify-center cursor-pointer hover:scale-110 transition ease-in">
-            <div id="upload" class="w-48 rounded-full">
-                <img id="preview" src="{{ asset('images/'.$user->photo) }}" />
+            class="avatar w-32 flex flex-col items-center cursor-pointer hover:scale-110 transition ease-in-out duration-300">
+            <div id="upload" class="mask mask-circle w-full">
+                <img id="preview" src="{{ asset('images/'.$user->photo) }}" class="w-full h-auto object-cover" />
             </div>
-            <small class="pb-0 border-white border-b flex gap-1 items-center justify-center">
-                upload photo
+            <small class=" mt-2 text-center text-black flex gap-1 items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                        d="M168,136a8,8,0,0,1-8,8H136v24a8,8,0,0,1-16,0V144H96a8,8,0,0,1,0-16h24V104a8,8,0,0,1,16,0v24h24A8,8,0,0,1,168,136Zm64-56V192a24,24,0,0,1-24,24H48a24,24,0,0,1-24-24V80A24,24,0,0,1,48,56H75.72L87,39.12A16,16,0,0,1,100.28,32h55.44A16,16,0,0,1,169,39.12L180.28,56H208A24,24,0,0,1,232,80Zm-16,0a8,8,0,0,0-8-8H176a8,8,0,0,1-6.66-3.56L155.72,48H100.28L86.66,68.44A8,8,0,0,1,80,72H48a8,8,0,0,0-8,8V192a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8Z">
+                    </path>
+                </svg>
+                Upload Photo
             </small>
+            @error('photo')
+            <small class="badge badge-error mt 4">{{ $message }}</small>
+            @enderror
         </div>
-        <input type="file" id="photo" name="photo" class="hidden" accept="image/*">
-        <input type="hidden" name="originphoto" value="{{ $user->photo }}">
     </div>
+    <input type="file" id="photo" name="photo" class="hidden" accept="image/*">
+    <input type="hidden" name="originphoto" value="{{ $user->photo }}">
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
         {{-- Document --}}
         <div>
-            <label class="label text-white font-medium text-sm">Document</label>
+            <label class="label text-black font-medium text-sm">Document</label>
             <input type="text" name="document"
                 class="input input-bordered w-full rounded-lg text-sm focus:ring-2 focus:ring-pink-400 focus:border-pink-400"
                 placeholder="75123123" value="{{ old('document', $user->document) }}" />
@@ -77,10 +81,9 @@
             <small class="badge badge-error mt-1">{{ $message }}</small>
             @enderror
         </div>
-
         {{-- Full Name --}}
         <div>
-            <label class="label text-white font-medium text-sm">Full Name</label>
+            <label class="label text-black font-medium text-sm">Full Name</label>
             <input type="text" name="fullname"
                 class="input input-bordered w-full rounded-lg text-sm focus:ring-2 focus:ring-pink-400 focus:border-pink-400"
                 placeholder="Jeremias Springfield" value="{{ old('fullname', $user->fullname) }}" />
@@ -91,12 +94,12 @@
 
         {{-- Gender --}}
         <div>
-            <label class="label text-white font-medium text-sm mb-1">Gender</label>
+            <label class="label text-black font-medium text-sm mb-1">Gender</label>
             <select name="gender"
-                class="select select-bordered w-full rounded-lg text-sm bg-white/80 border-white-300 focus:ring-2 focus:ring-pink-400 focus:border-pink-400">
+                class="select select-bordered w-full rounded-lg text-sm bg-white/80 border-gray-300 focus:ring-2 focus:ring-pink-400 focus:border-pink-400">
                 <option value="">Select</option>
                 <option value="Female" @if(old('gender', $user->gender)=='Female' ) selected @endif>Female</option>
-                <option value="Male" @if(old('gender', $user->gender)=='Male') selected @endif>Male</option>
+                <option value="Male" @if(old('gender', $user->gender)=='Male' ) selected @endif>Male</option>
             </select>
             @error('gender')
             <small class="badge badge-error mt-1">{{ $message }}</small>
@@ -105,7 +108,7 @@
 
         {{-- Birthdate --}}
         <div>
-            <label class="label text-white font-medium text-sm">Birthdate</label>
+            <label class="label text-black font-medium text-sm">Birthdate</label>
             <input type="date" name="birthdate"
                 class="input input-bordered w-full rounded-lg text-sm focus:ring-2 focus:ring-pink-400 focus:border-pink-400"
                 value="{{ old('birthdate', $user->birthdate) }}" />
@@ -116,7 +119,7 @@
 
         {{-- Phone --}}
         <div>
-            <label class="label text-white font-medium text-sm">Phone</label>
+            <label class="label text-black font-medium text-sm">Phone</label>
             <input type="text" name="phone"
                 class="input input-bordered w-full rounded-lg text-sm focus:ring-2 focus:ring-pink-400 focus:border-pink-400"
                 placeholder="3108326537" value="{{ old('phone', $user->phone) }}" />
@@ -127,7 +130,7 @@
 
         {{-- Email --}}
         <div>
-            <label class="label text-white font-medium text-sm">Email</label>
+            <label class="label text-black font-medium text-sm">Email</label>
             <input type="email" name="email"
                 class="input input-bordered w-full rounded-lg text-sm focus:ring-2 focus:ring-pink-400 focus:border-pink-400"
                 placeholder="example@email.com" value="{{ old('email', $user->email) }}" />
@@ -135,37 +138,30 @@
             <small class="badge badge-error mt-1">{{ $message }}</small>
             @enderror
         </div>
-    </div>
 
-    {{-- Botón centrado --}}
-    <div class="flex justify-center mt-6">
-        <button
-            class="btn btn-outline btn-secondary px-6 py-1 text-sm font-semibold rounded-lg shadow-sm hover:bg-pink-500 hover:text-white transition-all duration-200">
-            Register
-        </button>
-    </div>
+        {{-- Botón centrado --}}
+        <div class="flex items-center justify-center w-full mt-6 md:col-span-2">
+            <button
+                class="btn btn-outline btn-secondary px-6 py-1 text-sm font-semibold rounded-lg shadow-sm hover:bg-pink-500 hover:text-white transition-all duration-200">
+                Edit
+            </button>
+        </div>
 
-
-    {{-- Enlace inferior --}}
-    <div class="text-center mt-3 text-white">
-        <p class="text-xs">
-            <a class="link link-default hover:text-pink-600" href="{{ route('login') }}">
-                Already Registered?
-            </a>
-        </p>
-    </div>
-    </div>
 </form>
+
+@endsection
 
 @section('js')
 <script>
-    $(document).ready(function (){
-            $('#upload').click(function (e) {
-                e.preventDefault()
-                $('#photo').click()
-            })
-            $('#preview').attr('src', window-URL.createObjectURL($(this).prop('files')[0]))
+    $(document).ready(function(){
+        $('#upload'). click(function (e) {
+            e.preventDefault();
+            $('#photo').click();
         })
+        $('#photo').change(function (e) {
+            e.preventDefault();
+            $('#preview').attr('src', window.URL.createObjectURL($(this).prop('files')[0]));
+        })
+    })
 </script>
-@endsection
 @endsection

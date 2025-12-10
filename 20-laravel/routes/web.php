@@ -93,15 +93,15 @@ Route::middleware('auth')->group(function () {
     Route::post('search/pets', [PetController::class, 'search']);
 
     //Adoptions
-        Route::get('adoptions', [AdoptionController::class, 'index']);
-        Route::get('adoptions/{id}', [AdoptionController::class, 'show']);
+    Route::get('adoptions', [AdoptionController::class, 'index']);
+    Route::get('adoptions/{id}', [AdoptionController::class, 'show']);
 
-        // SEARCH - SOLO 1 CORRECTA
-        Route::post('search/adoptions', [AdoptionController::class, 'search'])->name('adoptions.search');
+    // SEARCH - SOLO 1 CORRECTA
+    Route::post('search/adoptions', [AdoptionController::class, 'search'])->name('adoptions.search');
 
-        // EXPORTS
-        Route::get('export/adoptions/pdf', [AdoptionController::class, 'pdf']);
-        Route::get('export/adoptions/excel', [AdoptionController::class, 'excel']);
+    // EXPORTS
+    Route::get('export/adoptions/pdf', [AdoptionController::class, 'pdf']);
+    Route::get('export/adoptions/excel', [AdoptionController::class, 'excel']);
 
 
 
@@ -110,13 +110,19 @@ Route::middleware('auth')->group(function () {
     Route::put('myprofile/{id}', [CustomerController::class, 'updatemyprofile']);
 
     Route::get('myadoptions/', [CustomerController::class, 'myadoptions']);
-    Route::get('myadoptions/{id}', [CustomerController::class, 'showadoption']);
+    Route::get('myadoptions/{id}', [CustomerController::class, 'showadoption'])
+        ->name('customer.adoptions.show');
 
     Route::get('makeadoptions/', [CustomerController::class, 'listpets']);
-    Route::get('makeadoption/{id}', [CustomerController::class, 'confirmadoption']);
-    Route::get('makeadoption/{id}', [CustomerController::class, 'makeadoption']);
+    // Mostrar confirmación
+    Route::get('makeadoption/{id}', [CustomerController::class, 'confirmadoption'])
+        ->name('customer.adoptions.confirm');
+
+    // Ejecutar la adopción (acción real)
+    Route::post('makeadoption', [CustomerController::class, 'makeadoption'])
+        ->name('customer.adoptions.make');
+
     Route::post('search/makeadoption', [CustomerController::class, 'search']);
-    
 });
 
 // AUTH
