@@ -96,33 +96,37 @@ class CustomerController extends Controller
 
 
     public function confirmadoption($id)
-{
-    $pet = Pet::findOrFail($id);
-    return view('customer.adoptions.confirm', compact('pet'));
-}
+    {
+        $pet = Pet::findOrFail($id);
+        return view('customer.adoptions.confirm', compact('pet'));
+    }
 
     public function makeadoption(Request $request)
-{
-    Adoption::create([
-        'user_id' => Auth::id(),
-        'pet_id'  => $request->pet_id
-    ]);
+    {
+        Adoption::create([
+            'user_id' => Auth::id(),
+            'pet_id'  => $request->pet_id
+        ]);
 
-    // Marcar la mascota como adoptada
-    Pet::where('id', $request->pet_id)->update(['status' => 1]);
+        // Marcar la mascota como adoptada
+        Pet::where('id', $request->pet_id)->update(['status' => 1]);
 
-    return redirect('myadoptions')
-        ->with('message', '✅ Adoption successful! Thank you for giving a loving home. 🐾❤️');
-}
+        return redirect('myadoptions')
+            ->with('message', '✅ Adoption successful! Thank you for giving a loving home. 🐾❤️');
+    }
     public function search(Request $request)
-{
-    $q = $request->q;
+    {
+        $q = $request->q;
 
-    $pets = Pet::kinds($q) // tu scope
-        ->orderBy('id', 'desc')
-        ->paginate(20);
+        $pets = Pet::where(function ($query) use ($q) {
+            $query->where('name', 'like', "%$q%")
+                ->orWhere('kind', 'like', "%$q%")
+                ->orWhere('breed', 'like', "%$q%");
+        })
+            ->where('status', 0)
+            ->orderBy('id', 'desc')
+            ->paginate(20);
 
-    return view('customer.search', compact('pets'))->render(); // <--- render() obligatorio
-}
-
+        return view('customer.search', compact('pets'));
+    }
 }

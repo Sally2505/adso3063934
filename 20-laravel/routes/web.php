@@ -122,7 +122,12 @@ Route::middleware('auth')->group(function () {
     Route::post('makeadoption', [CustomerController::class, 'makeadoption'])
         ->name('customer.adoptions.make');
 
-    Route::post('search/makeadoption', [CustomerController::class, 'search']);
+    // SEARCH PETS TO ADOPT
+    Route::post('makeadoptions/search', [CustomerController::class, 'search'])
+    ->name('customer.adoptions.search');
+
+
+
 });
 
 // AUTH

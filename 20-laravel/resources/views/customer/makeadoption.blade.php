@@ -15,7 +15,9 @@
 <h1 class="text-3xl md:text-4xl text-black flex items-center gap-3 justify-center pb-6 mb-10">
     <span class="p-3 flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="size-12" fill="currentColor" viewBox="0 0 256 256">
-            <path d="M178,40c-20.65,0-38.73,8.88-50,23.89C116.73,48.88,98.65,40,78,40a62.07,62.07,0,0,0-62,62c0,70,103.79,126.66,108.21,129a8,8,0,0,0,7.58,0C136.21,228.66,240,172,240,102A62.07,62.07,0,0,0,178,40ZM128,214.8C109.74,204.16,32,155.69,32,102A46.06,46.06,0,0,1,78,56c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46C224,155.61,146.24,204.15,128,214.8Z"></path>
+            <path
+                d="M178,40c-20.65,0-38.73,8.88-50,23.89C116.73,48.88,98.65,40,78,40a62.07,62.07,0,0,0-62,62c0,70,103.79,126.66,108.21,129a8,8,0,0,0,7.58,0C136.21,228.66,240,172,240,102A62.07,62.07,0,0,0,178,40ZM128,214.8C109.74,204.16,32,155.69,32,102A46.06,46.06,0,0,1,78,56c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46C224,155.61,146.24,204.15,128,214.8Z">
+            </path>
         </svg>
     </span>
     <span class="tracking-wide text-center">Make adoption</span>
@@ -32,8 +34,6 @@
     </svg>
     <input id="qsearch" type="search" placeholder="Search..." name="qsearch" class="text-white w-full" />
 </label>
-{{-- Token CSRF para JS --}}
-<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 
 {{-- Tabla --}}
@@ -49,7 +49,6 @@
                 <th class="hidden md:table-cell">Weight</th>
                 <th class="hidden md:table-cell">Age</th>
                 <th class="hidden md:table-cell">Breed</th>
-                {{-- <th class="hidden md:table-cell">Location</th> --}}
                 <th class="hidden md:table-cell py-3">Status</th>
                 <th class="hidden md:table-cell py-3">Active</th>
                 <th class="py-3 text-center">Actions</th>
@@ -152,6 +151,7 @@
     </div>
     <form method="dialog" class="modal-backdrop"><button>close</button></form>
 </dialog>
+
 <dialog id="modal_adopt" class="modal">
     <div class="modal-box text-center">
         <h3 class="text-2xl font-bold mb-4">Confirm Adoption 💖</h3>
@@ -159,8 +159,8 @@
                 class="font-semibold text-pink-500"></span>?</p>
 
         <form id="form_adopt" method="POST" action="{{ route('customer.adoptions.make') }}">
-    @csrf
-    <input type="hidden" name="pet_id" id="modal_pet_id">
+            @csrf
+            <input type="hidden" name="pet_id" id="modal_pet_id">
             <button type="submit"
                 class="btn btn-outline border-pink-500 text-pink-400 hover:bg-pink-500 hover:text-white hover:border-pink-600">
                 Confirm Adoption 🐾
@@ -174,72 +174,71 @@
 
 @section('js')
 <script>
-    $(document).ready(function (){
+$(document).ready(function () {
 
-    // Modal Delete
-    const modal_delete = document.getElementById('modal_delete');
-    let $frm;
+    // ========== SEARCH FIX ==========
 
-    $('table').on('click', '.btn_delete', function() {
-        const name = $(this).data('name');
-        $('.fullname').text(name);
-        $frm = $(this).next();
-        modal_delete.showModal();
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    const search = debounce(function(query) {
+
+        $.post("{{ route('customer.adoptions.search') }}", {
+            q: query,
+            _token: "{{ csrf_token() }}"
+        }, function(data) {
+            $('.datalist').html(data).hide().fadeIn(300);
+        });
+
+    }, 400);
+
+    $('body').on('input', '#qsearch', function(event) {
+        event.preventDefault();
+
+        const query = $(this).val();
+
+        $('.datalist').html(`
+            <tr>
+                <td colspan="11" class="text-center py-18">
+                    <span class="loading loading-spinner loading-xl"></span>
+                </td>
+            </tr>
+        `);
+
+        if(query !== ''){
+            search(query);
+        } else {
+            setTimeout(() => {
+                window.location.reload();
+            }, 300);
+        }
     });
 
-    $('.btn_confirm').on('click', function(e){
+
+    // ========== MODAL ADOPT ==========
+
+    const modal_adopt = document.getElementById('modal_adopt');
+
+    $('table').on('click', '.btn_adopt', function(e){
         e.preventDefault();
-        $frm.submit();
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+
+        $('#modal_pet_id').val(id);
+        $('#modal_pet_name').text(name);
+
+        modal_adopt.showModal();
     });
 
-    // Search
-    // Search
-function debounce(func, wait) {
-    let timeout
-    return function(...args) {
-        const later = () => { clearTimeout(timeout); func(...args) };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait)
-    }
-}
-
-const search = debounce(function(query) {
-    const token = $('input[name=_token]').val();
-    $.post("{{ url('search/makeadoption') }}", { 'q': query, '_token': token }, function (data) {
-        $('.datalist').html(data).hide().fadeIn(500);
-    })
-}, 500);
-
-// Aquí va tu bloque actualizado para input
-$('body').on('input', '#qsearch', function(event) {
-    event.preventDefault();
-    const query = $(this).val();
-    $('.datalist').html(`<tr><td colspan="9" class="text-center py-18"><span class="loading loading-spinner loading-xl"></span></td></tr>`);
-    if(query != ''){ 
-        search(query); 
-    } else { 
-        setTimeout(() => { window.location.replace('{{ url("makeadoptions/") }}') }, 500); 
-    }
 });
-
-
-    // Import
-    $('.btn-import').click(function(){ $('#file').click(); })
-    $('#file').change(function(){ $(this).parent().submit(); })
-
-})
-
-// Modal Adopt
-const modal_adopt = document.getElementById('modal_adopt');
-
-$('table').on('click', '.btn_adopt', function(e){
-    e.preventDefault();
-    const petId = $(this).data('id');
-    const petName = $(this).data('name');
-    $('#modal_pet_id').val(petId);
-    $('#modal_pet_name').text(petName);
-    modal_adopt.showModal();
-});
-
 </script>
 @endsection

@@ -39,7 +39,7 @@
                 </li>
 
                 {{-- ADMIN --}}
-                @if (Auth::user()->role == 'Adminitrator')
+                @if (Auth::user()->role == 'Administrator')
                 <li>
                     <a href="{{ url('users/') }}" class="flex items-center gap-2 hover:text-pink-300">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
