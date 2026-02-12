@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API JS: Larapets</title>
+    <link rel="stylesheet" href="css/master.css">
+</head>
+
+<body>
+    <!-- View: Login -->
+    <main id="login" class="hide">
+        <header>
+            <img src="imgs/title-login.png" alt="">
+        </header>
+        <form action="">
+            <label for="email">
+                Email:
+                <input type="email" name="email" placeholder="example@mail.com">
+            </label>
+            <label for="password">
+                Password:
+                <input type="password" name="password" placeholder="your secrete">
+            </label>
+            <button>Login</button>
+        </form>
+    </main>
+    <!-- View dashborad -->
+    <main id="dashboard" class="hide">
+        <header>
+            <img src="imgs/title-dashboard.png" alt="Pet List">
+        </header>
+        <nav>
+            <a href="#"><img src="imgs/Add btn.png" alt="Add Pet"></a>
+            <a href="#"><img src="imgs/Logout btn.png" alt="Logout"></a>
+        </nav>
+        <h2>Pet List:</h2>
+        <section class="list">
+            <div class="row">
+                <img src="imgs/dog.svg" alt="">
+                <div class="data">
+                    <h3>Snoop Dog</h3>
+                    <h4>Dog: French Bulldog</h4>
+                </div>
+                <nav class="actions">
+                    <a href="" class="btnShow"></a>
+                    <a href="" class="btnEdit"></a>
+                    <a href="" class="btnDelete"></a>
+                </nav>
+            </div>
+            <div class="row">
+                <img src="imgs/cat.svg" alt="">
+                <div class="data">
+                    <h3>Michu</h3>
+                    <h4>Cat: Siamese</h4>
+                </div>
+                <nav class="actions">
+                    <a href="" class="btnShow"></a>
+                    <a href="" class="btnEdit"></a>
+                    <a href="" class="btnDelete"></a>
+                </nav>
+            </div>
+            <div class="row">
+                <img src="imgs/dog.svg" alt="">
+                <div class="data">
+                    <h3>Ungo</h3>
+                    <h4>Dog: Labrador</h4>
+                </div>
+                <nav class="actions">
+                    <a href="" class="btnShow"></a>
+                    <a href="" class="btnEdit"></a>
+                    <a href="" class="btnDelete"></a>
+                </nav>
+            </div>
+            <div class="row">
+                <img src="imgs/cat.svg" alt="">
+                <div class="data">
+                    <h3>Miau</h3>
+                    <h4>Cat: Persian</h4>
+                </div>
+                <nav class="actions">
+                    <a href="" class="btnShow"></a>
+                    <a href="" class="btnEdit"></a>
+                    <a href="" class="btnDelete"></a>
+                </nav>
+            </div>
+        </section>
+    </main>
+    <!-- View: Add -->
+    <main id="add" class="">
+        <header>
+            <a class="back"><img src="imgs/back.png" alt=""></a>
+            <img src="imgs/AddSection.png" alt="">
+        </header>
+
+        <form class="formAdd">
+            <label>Name:
+                <input type="text" placeholder="Frenchi">
+            </label>
+
+            <label>Kind:
+                <input type="text" placeholder="Dog">
+            </label>
+
+            <label>Weight:
+                <input type="text" placeholder="12">
+            </label>
+
+            <label>Age:
+                <input type="text" placeholder="3">
+            </label>
+
+            <label>Bread:
+                <input type="text" placeholder="Doberman">
+            </label>
+
+            <label>Location:
+                <input type="text" placeholder="Manizales">
+            </label>
+
+            <div class="buttons">
+                <button class="save">Add</button>
+                <button class="cancel">Cancel</button>
+            </div>
+        </form>
+    </main>
+    <!-- View: Add -->
+    <main id="add" class="">
+        <header>
+            <a class="back"><img src="imgs/back.png" alt=""></a>
+            <img src="imgs/AddSection.png" alt="">
+        </header>
+
+        <form class="formAdd">
+            <label>Name:
+                <input type="text" placeholder="Frenchi">
+            </label>
+
+            <label>Kind:
+                <input type="text" placeholder="Dog">
+            </label>
+
+            <label>Weight:
+                <input type="text" placeholder="12">
+            </label>
+
+            <label>Age:
+                <input type="text" placeholder="3">
+            </label>
+
+            <label>Bread:
+                <input type="text" placeholder="Doberman">
+            </label>
+
+            <label>Location:
+                <input type="text" placeholder="Manizales">
+            </label>
+
+            <div class="buttons">
+                <button class="save">Add</button>
+                <button class="cancel">Cancel</button>
+            </div>
+        </form>
+    </main>
+
+
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>
