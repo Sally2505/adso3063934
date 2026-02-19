@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API js: larapets</title>
+    <link rel="stylesheet" href="CSS/master.css">
+</head>
+
+<body>
+    <!-- View: Login -->
+    <main id="login">
+        <header>
+            <img src="imgs/title-login.png" alt="">
+        </header>
+        <form action="">
+            <label for="email">
+                @Email
+                <input type="email" name="email" placeholder="example@gmail.com">
+            </label>
+            <label for="password">
+                Password
+                <input type="password" name="password" placeholder="your secret password">
+            </label>
+            <button type="button" class="btnLogin"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                    fill="#000000" viewBox="0 0 256 256">
+                    <path
+                        d="M120,216a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H56V208h56A8,8,0,0,1,120,216Zm109.66-93.66-40-40a8,8,0,0,0-11.32,11.32L204.69,120H112a8,8,0,0,0,0,16h92.69l-26.35,26.34a8,8,0,0,0,11.32,11.32l40-40A8,8,0,0,0,229.66,122.34Z">
+                    </path>
+                </svg> Login</button>
+        </form>
+    </main>
+    <!-- View: Dashboard -->
+    <main id="dashboard">
+        <header>
+            <img src="imgs/title-dashboard.png" alt="dashboard">
+        </header>
+        <nav>
+            <a href="javascript:;" class="btnAdd">
+                <img src="imgs/btn-add.png" alt="Add">
+            </a>
+            <a href="javascript:;" class="btnLogout">
+                <img src="imgs/btn-logout.png" alt="Logout">
+            </a>
+        </nav>
+        <h2>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="28" height="28"
+                style="vertical-align:middle; margin-right:8px;">
+                <path fill="#ffffff"
+                    d="M298.5 156.9C312.8 199.8 298.2 243.1 265.9 253.7C233.6 264.3 195.8 238.1 181.5 195.2C167.2 152.3 181.8 109 214.1 98.4C246.4 87.8 284.2 114 298.5 156.9zM164.4 262.6C183.3 295 178.7 332.7 154.2 346.7C129.7 360.7 94.5 345.8 75.7 313.4C56.9 281 61.4 243.3 85.9 229.3C110.4 215.3 145.6 230.2 164.4 262.6zM133.2 465.2C185.6 323.9 278.7 288 320 288C361.3 288 454.4 323.9 506.8 465.2C510.4 474.9 512 485.3 512 495.7L512 497.3C512 523.1 491.1 544 465.3 544C453.8 544 442.4 542.6 431.3 539.8L343.3 517.8C328 514 312 514 296.7 517.8L208.7 539.8C197.6 542.6 186.2 544 174.7 544C148.9 544 128 523.1 128 497.3L128 495.7C128 485.3 129.6 474.9 133.2 465.2zM485.8 346.7C461.3 332.7 456.7 295 475.6 262.6C494.5 230.2 529.6 215.3 554.1 229.3C578.6 243.3 583.2 281 564.3 313.4C545.4 345.8 510.3 360.7 485.8 346.7zM374.1 253.7C341.8 243.1 327.2 199.8 341.5 156.9C355.8 114 393.6 87.8 425.9 98.4C458.2 109 472.8 152.3 458.5 195.2C444.2 238.1 406.4 264.3 374.1 253.7z" />
+            </svg>
+            Pet List
+        </h2>
+        <section class="list">
+            <div class="row">
+                <img src="imgs/pet01.png" alt="Pet01">
+                <div class="data">
+                    <h3>Chocolatito</h3>
+                    <h4>Cat</h4>
+                </div>
+                <nav class="actions">
+                    <a href="javascript:;" class="btnShow"></a>
+                    <a href="javascript:;" class="btnEdit"></a>
+                    <a href="javascript:;" class="btnDelete"></a>
+                </nav>
+            </div>
+            <div class="row">
+                <img src="imgs/pet02.png" alt="Pet02">
+                <div class="data">
+                    <h3>Frenchi</h3>
+                    <h4>Dog</h4>
+                </div>
+                <nav class="actions">
+                    <a href="javascript:;" class="btnShow"></a>
+                    <a href="javascript:;" class="btnEdit"></a>
+                    <a href="javascript:;" class="btnDelete"></a>
+                </nav>
+            </div>
+            <div class="row">
+                <img src="imgs/pet01.png" alt="Pet01">
+                <div class="data">
+                    <h3>Chocolatito</h3>
+                    <h4>Cat</h4>
+                </div>
+                <nav class="actions">
+                    <a href="javascript:;" class="btnShow"></a>
+                    <a href="javascript:;" class="btnEdit"></a>
+                    <a href="javascript:;" class="btnDelete"></a>
+                </nav>
+            </div>
+            <div class="row">
+                <img src="imgs/pet02.png" alt="Pet02">
+                <div class="data">
+                    <h3>Frenchi</h3>
+                    <h4>Dog</h4>
+                </div>
+                <nav class="actions">
+                    <a href="javascript:;" class="btnShow"></a>
+                    <a href="javascript:;" class="btnEdit"></a>
+                    <a href="javascript:;" class="btnDelete"></a>
+                </nav>
+            </div>
+            <div class="row">
+                <img src="imgs/pet01.png" alt="Pet01">
+                <div class="data">
+                    <h3>Chocolatito</h3>
+                    <h4>Cat</h4>
+                </div>
+                <nav class="actions">
+                    <a href="javascript:;" class="btnShow"></a>
+                    <a href="javascript:;" class="btnEdit"></a>
+                    <a href="javascript:;" class="btnDelete"></a>
+                </nav>
+            </div>
+            <div class="row">
+                <img src="imgs/pet02.png" alt="Pet02">
+                <div class="data">
+                    <h3>Frenchi</h3>
+                    <h4>Dog</h4>
+                </div>
+                <nav class="actions">
+                    <a href="javascript:;" class="btnShow"></a>
+                    <a href="javascript:;" class="btnEdit"></a>
+                    <a href="javascript:;" class="btnDelete"></a>
+                </nav>
+            </div>
+            <div class="row">
+                <img src="imgs/pet01.png" alt="Pet01">
+                <div class="data">
+                    <h3>Chocolatito</h3>
+                    <h4>Cat</h4>
+                </div>
+                <nav class="actions">
+                    <a href="javascript:;" class="btnShow"></a>
+                    <a href="javascript:;" class="btnEdit"></a>
+                    <a href="javascript:;" class="btnDelete"></a>
+                </nav>
+            </div>
+        </section>
+    </main>
+
+    <!-- View: Add -->
+    <main id="add">
+        <header>
+            <a href="javascript:;" class="btnBack">
+                <img src="imgs/btn-back.png" alt="back">
+            </a>
+            <img src="imgs/title-add.png" alt="add">
+        </header>
+        <form action="">
+            <label for="name">
+                Name
+                <input type="text" name="name" placeholder="Enter name">
+            </label>
+            <label for="kind">
+                Kind
+                <input type="text" name="kind" placeholder="Enter kind">
+            </label>
+            <label for="weight">
+                Weight
+                <input type="text" name="weight" placeholder="Enter weight">
+            </label>
+            <label for="age">
+                Age
+                <input type="text" name="age" placeholder="Enter age">
+            </label>
+            <label for="bread">
+                Bread
+                <input type="text" name="bread" placeholder="Enter bread">
+            </label>
+            <label for="location">
+                Location
+                <input type="text" name="location" placeholder="Enter location">
+            </label>
+            <label for="description">
+                Description
+                <textarea name="description" placeholder="Feed only meat"></textarea>
+            </label>
+
+            <div class="actions">
+                <button type="button">Add</button>
+                <a href="javascript:;" class="btnCancel">Cancel</a>
+            </div>
+        </form>
+    </main>
+
+    <!-- View: Show -->
+    <main id="show">
+        <header>
+            <a href="javascript:;" class="btnBack">
+                <img src="imgs/btn-back.png" alt="back">
+            </a>
+            <img src="imgs/title-show.png" alt="show">
+        </header>
+
+        <section class="data">
+            <img src="imgs/pet03.png" class="pet-img" alt="Pet03">
+
+            <div class="info-row">
+                <span>Name:</span>
+                <p>Chocolatito</p>
+            </div>
+
+            <div class="info-row">
+                <span>Kind:</span>
+                <p>Cat</p>
+            </div>
+
+            <div class="info-row">
+                <span>Age:</span>
+                <p>3 years</p>
+            </div>
+
+            <div class="info-row">
+                <span>Weight:</span>
+                <p>5.0 Kls</p>
+            </div>
+
+            <div class="info-row">
+                <span>Breed:</span>
+                <p>Sphynix</p>
+            </div>
+
+            <div class="info-row">
+                <span>Location:</span>
+                <p>Manizales</p>
+            </div>
+
+            <h3 class="desc-title">Description:</h3>
+            <p class="description">
+                This cat has a curious and slightly worried expression. It has short, light brown fur, big round eyes
+                that look up attentively, and floppy ears that hang to the sides. Its nose is dark and shiny, and its
+                head is tilted a little, giving it a sweet, innocent, and almost funny look. Overall, the cat looks
+                friendly, gentle, and very expressive, as if it’s reacting to a sound or waiting for attention.
+            </p>
+        </section>
+    </main>
+
+    <!-- View: Edit -->
+    <main id="edit">
+        <header>
+            <a href="javascript:;" class="btnBack">
+                <img src="imgs/btn-back.png" alt="back">
+            </a>
+            <img src="imgs/title-edit.png" alt="add">
+        </header>
+        <form action="">
+            <label for="name">
+                Name
+                <input type="text" name="name" placeholder="Chocolatito">
+            </label>
+            <label for="kind">
+                Kind
+                <input type="text" name="kind" placeholder="Cat">
+            </label>
+            <label for="weight">
+                Weight
+                <input type="number" name="weight" placeholder="5.0">
+            </label>
+            <label for="age">
+                Age
+                <input type="number" name="age" placeholder="3">
+            </label>
+            <label for="bread">
+                Bread
+                <input type="text" name="bread" placeholder="Sphynix">
+            </label>
+            <label for="location">
+                Location
+                <input type="text" name="location" placeholder="Manizales">
+            </label>
+            <label for="description">
+                Description
+                <textarea name="description" placeholder="Nice cat so charming lovely"></textarea>
+            </label>
+
+            <div class="actions">
+                <button type="button">Edit</button>
+                <a href="javascript:;" class="btnCancel">Cancel</a>
+            </div>
+        </form>
+
+    </main>
+
+    <script src="js/layout.js"></script>
+</body>
+
+</html>
