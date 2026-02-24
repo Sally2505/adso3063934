@@ -1,0 +1,22 @@
+.btn-back {
+    align-items: center;
+    background-color: #143656;
+    border-radius: 50%;
+    color: #72c7ee;
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    margin-bottom: 2rem;
+    transition: all 0.3s;
+    width: 40px;
+    svg {
+        zoom: 1.2;
+    }
+}
+
+.btn-back:hover {
+    background-color:#72c7ee;
+    color:#143656;
+    transform: translateX(-4px);
+
+}
