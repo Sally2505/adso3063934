@@ -13,7 +13,7 @@ class PetController extends Controller
      */
     public function index()
     {
-        $pets = pet::all();
+        $pets = pet::all();                                                               
 
         if ($pets->isEmpty()) {
             return response()->json([
