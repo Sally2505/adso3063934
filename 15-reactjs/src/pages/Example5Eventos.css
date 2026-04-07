@@ -12,9 +12,9 @@
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* Bulbasaur */
+/* Mimikyu */
 .choice-button:nth-of-type(1) {
-    background: linear-gradient(135deg, #2e8b57, #66bb6a);
+    background: linear-gradient(135deg, #8b7d2e, #66bb6a);
 }
 
 /* Charmander */

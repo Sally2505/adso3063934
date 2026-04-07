@@ -215,7 +215,7 @@ async function editPet(id) {
 async function deletePet(id) {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: "¡No podrás revertir esto!",
+        text: "¡No podrás revertir tu decisión!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -235,10 +235,10 @@ async function deletePet(id) {
                 });
                 const data = await response.json();
                 if (response.ok) {
-                    Swal.fire('¡Eliminado!', 'La mascota ha sido eliminada.', 'success');
+                    Swal.fire('¡Eliminado con éxito!', 'La mascota ha sido eliminada.', 'success');
                     getPets();
                 } else {
-                    Swal.fire('Error', data.message || 'Error al eliminar la mascota', 'error');
+                    Swal.fire('Error', data.message || 'Error al eliminar la mascota seleccionada', 'error');
                 }
             } catch (error) {
                 Swal.fire('Error', 'Error de conexión', 'error');
@@ -309,12 +309,12 @@ async function submitEditPet(e) {
         });
         const data = await response.json();
         if (response.ok) {
-            Swal.fire("¡Mascota editada!", "Los cambios fueron guardados.", "success");
+            Swal.fire("¡Mascota editada!", "Los cambios fueron guardados con éxito.", "success");
             getPets();
             mainEdit.style.display = "none";
             document.getElementById("dashboard").style.display = "block";
         } else {
-            Swal.fire("Error", data.message || "No se pudo editar la mascota", "error");
+            Swal.fire("Error", data.message || "Lo sentmos, la mascota no ha podido ser editada", "error");
         }
     } catch (error) {
         Swal.fire("Error", "Error de conexión", "error");

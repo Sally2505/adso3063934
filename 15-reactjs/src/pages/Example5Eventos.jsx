@@ -66,21 +66,21 @@ function Example5Eventos() {
           onClick={(e) => handleChoice("Bulbasaur", e)}
           className="choice-button"
         >
-          <span style={{ zoom: 2.4 }}>🎋</span> Bulbasaur
+          <span style={{ zoom: 2.4 }}>😵‍💫</span> Mimikyu
         </button>
 
         <button
           onClick={(e) => handleChoice("Charmander", e)}
           className="choice-button"
         >
-          <span style={{ zoom: 2.4 }}>🔥</span> Charmander
+          <span style={{ zoom: 2.4 }}>👾</span> Misdreavus
         </button>
 
         <button
           onClick={(e) => handleChoice("Squirtle", e)}
           className="choice-button"
         >
-          <span style={{ zoom: 2.4 }}>💧</span> Squirtle
+          <span style={{ zoom: 2.4 }}>👻</span> Gengar
         </button>
 
         {chosenPokemon && (
@@ -95,34 +95,34 @@ function Example5Eventos() {
 
         <div style={btnClick}>
           <button
-            onMouseEnter={() => handleMouseEnter("Pikachu")}
+            onMouseEnter={() => handleMouseEnter("Mew")}
             onMouseLeave={handleMouseLeave}
             className={
-              hoveredPokemon === "Pikachu"
+              hoveredPokemon === "Mew"
                 ? "hover-button active"
                 : "hover-button"
             }
           >
             Hover here!
             <img
-              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
-              alt="Pikachu"
+              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png"
+              alt="Mew"
             />
           </button>
 
           <button
-            onMouseEnter={() => handleMouseEnter("Dusknoir")}
+            onMouseEnter={() => handleMouseEnter("Slowpoke")}
             onMouseLeave={handleMouseLeave}
             className={
-              hoveredPokemon === "Dusknoir"
+              hoveredPokemon === "Slowpoke"
                 ? "hover-button active"
                 : "hover-button"
             }
           >
             Hover here!
             <img
-              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/477.png"
-              alt="Dusknoir"
+              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/79.png"
+              alt="Slowpoke"
             />
           </button>
         </div>

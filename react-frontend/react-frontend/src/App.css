@@ -1,0 +1,447 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: #e8485a;
+  min-height: 100vh;
+  color: #333;
+}
+
+/* ─── LAYOUT ─── */
+.page {
+  max-width: 420px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: #e8485a;
+  position: relative;
+}
+
+/* ─── NAVBAR ─── */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Centrado como en la imagen */
+  padding: 15px;
+  background-color: #ff6b6b;
+  /* Color coral más vibrante */
+  position: relative;
+  z-index: 10;
+}
+
+.navbar-title {
+  font-family: 'Lora', serif;
+  /* Fuente con serif para el estilo clásico */
+  font-size: 24px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.navbar-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-add {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-logout {
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+/* ─── CONTENT CARD ─── */
+.content-card {
+  background-color: #f5c5cb;
+  border-radius: 20px 20px 0 0;
+  min-height: calc(100vh - 60px);
+  padding: 20px 16px;
+}
+
+/* ─── LOGIN ─── */
+/* ─── LOGIN PAGE ─── */
+.login-page {
+  width: 100%;
+  max-width: 420px;
+  /* Tamaño móvil */
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  /* Necesario para que los hijos con absolute funcionen */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+
+.login-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 0;
+}
+
+.login-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 0;
+  border: none;
+}
+
+.login-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #c0392b;
+  text-align: center;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.login-content {
+  position: relative;
+  z-index: 2;
+  /* Por encima de la imagen */
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.form-group label {
+  color: white;
+  /* Blanco para que resalte sobre el rosa */
+  font-family: 'serif';
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.form-group input {
+  background-color: #d9d9d9 !important;
+  /* Gris claro de la referencia */
+  border: none;
+  border-radius: 0;
+  /* Eran más cuadrados en la imagen */
+  padding: 12px;
+  width: 280px;
+  margin-bottom: 20px;
+}
+
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 12px;
+  background-color: #f9dde0;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  color: #555;
+  outline: none;
+  transition: background 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  background-color: #fce8ea;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #bbb;
+}
+
+/* ─── LOGIN BG IMAGE ─── */
+.login-hero {
+  position: absolute;
+  /* Importante: sale del flujo normal */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Ocupa todo el fondo */
+  z-index: 1;
+}
+
+.login-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Para que el perro no se estire feo */
+}
+
+/* elimina el estilo circular anterior */
+.login-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  border: none;
+}
+
+.login-bg-img {
+  filter: none !important;
+}
+
+/* --- EL FORMULARIO FLOTANTE --- */
+.login-form-card {
+  position: relative;
+  z-index: 5;
+  /* Por encima del perro */
+  margin-top: 100px;
+  /* Ajusta esto para bajar o subir el formulario sobre el perro */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ─── BUTTONS ─── */
+.btn-primary,
+.login-form-card button {
+  background-color: #8eff71 !important;
+  /* Verde neón */
+  color: black;
+  border: none;
+  padding: 8px 25px;
+  font-family: 'serif';
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 8px;
+}
+
+.btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btn-row .btn-primary,
+.btn-row .btn-danger {
+  flex: 1;
+  margin-top: 0;
+}
+
+/* ─── PET LIST ─── */
+.pet-card {
+  background-color: #f9dde0;
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pet-card-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e8485a;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+  overflow: hidden;
+}
+
+.pet-card-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pet-card-info {
+  flex: 1;
+}
+
+.pet-card-name {
+  font-weight: 800;
+  font-size: 15px;
+  color: #333;
+}
+
+.pet-card-desc {
+  font-size: 12px;
+  color: #777;
+  margin-top: 2px;
+}
+
+.pet-card-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  text-decoration: none;
+  color: white;
+}
+
+.icon-btn-view {
+  background-color: #3498db;
+}
+
+.icon-btn-edit {
+  background-color: #f39c12;
+}
+
+.icon-btn-delete {
+  background-color: #e74c3c;
+}
+
+/* ─── SHOW PAGE ─── */
+.show-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 16px;
+  object-fit: cover;
+  margin: 0 auto 20px;
+  display: block;
+  background: #e8485a;
+}
+
+.show-field {
+  margin-bottom: 14px;
+}
+
+.show-field label {
+  font-weight: 800;
+  color: #c0392b;
+  font-size: 15px;
+}
+
+.show-field-value {
+  background-color: #f9dde0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-top: 4px;
+  font-size: 15px;
+  color: #555;
+}
+
+/* ─── SECTION TITLE ─── */
+.section-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #c0392b;
+  margin-bottom: 14px;
+}
+
+/* ─── PHOTO UPLOAD ─── */
+.photo-upload-area {
+  width: 110px;
+  height: 110px;
+  border-radius: 16px;
+  background: #f9dde0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0 auto 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-upload-area img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.photo-upload-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(76, 175, 80, 0.9);
+  color: white;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px;
+  cursor: pointer;
+}
