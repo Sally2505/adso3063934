@@ -4,6 +4,15 @@ import Pagination from "./Pagination";
 import SearchGames from "./SearchGames";
 import AddGameButton from "./AddGameButton";
 
+type GameItem = {
+    id: number;
+    title: string;
+    price: number;
+    cover: string;
+    console?: {
+        name: string;
+    } | null;
+};
 
 interface GamesInfoProps {
     currentPage: number;
@@ -55,8 +64,8 @@ export default async function GamesInfo({ currentPage, searchQuery }: GamesInfoP
 
             {/* Grid Responsivo de Juegos */}
             {games && games.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {games.map((game: any) => (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4">
+                    {games.map((game: GameItem) => (
                         <GameCard key={game.id} game={game} />
                     ))}
                 </div>

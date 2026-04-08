@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { PrismaClient } from '@/src/generated/prisma';
+import { Prisma, PrismaClient } from '@/src/generated/prisma';
 import { PrismaNeon } from '@prisma/adapter-neon';
 import { revalidatePath } from 'next/cache';
 import { mkdir, unlink, writeFile } from "fs/promises";
@@ -164,13 +164,39 @@ export async function getConsolesAction() {
     }
 }
 
-export async function getGamesAction(page: number = 1, pageSize: number = 12, query: string = "") {
+export async function getGameGenresAction() {
+    try {
+        const genres = await prisma.games.findMany({
+            distinct: ['genre'],
+            select: { genre: true },
+            orderBy: { genre: 'asc' }
+        });
+
+        return {
+            success: true,
+            genres: genres
+                .map((item) => item.genre?.trim())
+                .filter((genre): genre is string => Boolean(genre))
+        };
+    } catch {
+        return { success: false, error: "No se pudieron cargar las categorías" };
+    }
+}
+
+export async function getGamesAction(
+    page: number = 1,
+    pageSize: number = 12,
+    query: string = "",
+    genre: string = "",
+    consoleId?: number
+) {
     try {
         const skip = (page - 1) * pageSize;
-
-        const where = query
-            ? { title: { contains: query, mode: 'insensitive' as const } }
-            : {};
+        const where: Prisma.GamesWhereInput = {
+            ...(query ? { title: { contains: query, mode: 'insensitive' } } : {}),
+            ...(genre ? { genre } : {}),
+            ...(consoleId ? { console_id: consoleId } : {})
+        };
 
         const [games, total] = await Promise.all([
             prisma.games.findMany({
