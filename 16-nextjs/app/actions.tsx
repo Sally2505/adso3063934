@@ -20,6 +20,13 @@ const gameSchema = z.object({
     description: z.string().min(10, "Description too short"),
 });
 
+const consoleSchema = z.object({
+    name: z.string().min(2, "Name required"),
+    manufacturer: z.string().min(2, "Manufacturer required"),
+    releaseDate: z.string().min(1, "Release date required"),
+    description: z.string().min(10, "Description too short"),
+});
+
 const coversDirectory = path.join(process.cwd(), "public", "covers");
 const defaultCovers = new Set(["no-cover.png", "no-cover.jpeg"]);
 
@@ -110,6 +117,50 @@ export async function getGameByIdAction(id: number) {
     }
 }
 
+export async function getConsoleByIdAction(id: number) {
+    try {
+        const console = await prisma.console.findUnique({
+            where: { id },
+            include: {
+                games: {
+                    select: { id: true, title: true }
+                }
+            }
+        });
+        return { success: true, console };
+    } catch {
+        return { success: false, error: "No se pudo obtener la consola" };
+    }
+}
+
+export async function deleteConsoleAction(id: number) {
+    try {
+        const consoleItem = await prisma.console.findUnique({
+            where: { id },
+            select: { image: true, _count: { select: { games: true } } }
+        });
+
+        if (!consoleItem) {
+            return { success: false, error: "La consola no existe" };
+        }
+
+        if (consoleItem._count.games > 0) {
+            return { success: false, error: "No puedes eliminar una consola con juegos asociados" };
+        }
+
+        await prisma.console.delete({
+            where: { id }
+        });
+
+        await deleteCoverFile(consoleItem.image);
+        revalidatePath('/consoles');
+        return { success: true };
+    } catch (error) {
+        console.error("Error al eliminar consola:", error);
+        return { success: false, error: "No se pudo eliminar la consola" };
+    }
+}
+
 export async function createGameAction(formData: FormData) {
     try {
         const data = {
@@ -161,6 +212,80 @@ export async function getConsolesAction() {
         return { success: true, consoles };
     } catch {
         return { success: false, error: "No se pudieron cargar las consolas" };
+    }
+}
+
+export async function createConsoleAction(formData: FormData) {
+    try {
+        const data = {
+            name: formData.get("name"),
+            manufacturer: formData.get("manufacturer"),
+            releaseDate: formData.get("releaseDate"),
+            description: formData.get("description"),
+        };
+
+        const validated = consoleSchema.safeParse(data);
+        if (!validated.success) {
+            return { success: false, errors: validated.error.flatten().fieldErrors };
+        }
+
+        const file = formData.get("image") as File;
+        let fileName = "no-cover.png";
+
+        if (file && file.size > 0) {
+            fileName = await saveCoverFile(file);
+        }
+
+        await prisma.console.create({
+            data: {
+                name: validated.data.name,
+                manufacturer: validated.data.manufacturer,
+                releaseDate: new Date(validated.data.releaseDate),
+                description: validated.data.description,
+                image: fileName
+            }
+        });
+
+        revalidatePath("/consoles");
+        return { success: true };
+    } catch (error) {
+        console.error("Error creando consola:", error);
+        return { success: false, error: "No se pudo crear la consola" };
+    }
+}
+
+export async function updateConsoleAction(
+    id: number,
+    data: { name: string; manufacturer: string; releaseDate: string; description: string; image: string },
+    formData?: FormData
+) {
+    try {
+        let imageFileName = data.image;
+
+        const newImage = formData?.get("newImage") as File | null;
+        if (newImage && newImage.size > 0) {
+            const previousImage = data.image;
+            imageFileName = await saveCoverFile(newImage);
+            await deleteCoverFile(previousImage);
+        }
+
+        await prisma.console.update({
+            where: { id },
+            data: {
+                name: data.name,
+                manufacturer: data.manufacturer,
+                releaseDate: new Date(data.releaseDate),
+                description: data.description,
+                image: imageFileName
+            }
+        });
+
+        revalidatePath('/consoles');
+        revalidatePath(`/consoles/${id}`);
+        return { success: true };
+    } catch (error) {
+        console.error("Error actualizando consola:", error);
+        return { success: false, error: "No se pudo actualizar la consola" };
     }
 }
 

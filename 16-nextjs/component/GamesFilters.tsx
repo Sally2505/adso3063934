@@ -34,7 +34,7 @@ export default function GamesFilters({ genres, consoles }: GamesFiltersProps) {
     };
 
     return (
-        <div className="relative z-40 flex w-full flex-col gap-3 lg:flex-row lg:items-center">
+        <div className="relative z-10 flex w-full flex-col gap-3 lg:flex-row lg:items-center">
             <div className="relative w-full min-w-0 lg:min-w-[19rem]">
                 <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-500">
                     <MagnifyingGlass size={20} weight="bold" className={isPending ? "animate-spin" : ""} />

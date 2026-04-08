@@ -40,8 +40,8 @@ export default async function GamesInfoPanel({
         getGameGenresAction()
     ]);
 
-    const consoles = consolesResponse.success ? consolesResponse.consoles : [];
-    const genres = genresResponse.success ? genresResponse.genres : [];
+    const consoles = consolesResponse.success ? consolesResponse.consoles ?? [] : [];
+    const genres = genresResponse.success ? genresResponse.genres ?? [] : [];
 
     if (!success) {
         return (
@@ -70,7 +70,7 @@ export default async function GamesInfoPanel({
                     </div>
                 </div>
 
-                <div className="relative z-40 flex w-full flex-col gap-4 lg:ms-auto lg:w-auto lg:flex-row lg:items-center">
+                <div className="flex w-full flex-col gap-4 lg:ms-auto lg:w-auto lg:flex-row lg:items-center">
                     <GamesFilters genres={genres} consoles={consoles} />
                     <AddGameButton />
                 </div>

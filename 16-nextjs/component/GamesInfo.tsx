@@ -1,6 +1,6 @@
 import { getGamesAction } from "@/app/actions";
 import GameCard from "./GameCard";
-import Pagination from "./Pagination";
+import GamesPagination from "./GamesPagination";
 import SearchGames from "./SearchGames";
 import AddGameButton from "./AddGameButton";
 
@@ -85,7 +85,7 @@ export default async function GamesInfo({ currentPage, searchQuery }: GamesInfoP
             {/* Paginación: Solo aparece si hay más de una página */}
             {totalPages && totalPages > 1 && (
                 <div className="mt-12">
-                    <Pagination
+                    <GamesPagination
                         totalPages={totalPages}
                         currentPage={currentPage}
                         searchQuery={searchQuery} // Importante pasar el query a la paginación
