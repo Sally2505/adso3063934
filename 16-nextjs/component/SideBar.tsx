@@ -8,22 +8,24 @@ import { SquaresFourIcon, JoystickIcon, GearIcon, GameControllerIcon, ListIcon, 
 export default function SideBar({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const storageKey = "sidebar-open";
-    const [isDrawerOpen, setIsDrawerOpen] = useState(() => {
-        if (typeof window === "undefined") {
-            return false;
-        }
-
-        const saved = window.localStorage.getItem(storageKey);
-        if (saved === "true" || saved === "false") {
-            return saved === "true";
-        }
-
-        return window.innerWidth >= 1024;
-    });
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        window.localStorage.setItem(storageKey, String(isDrawerOpen));
-    }, [isDrawerOpen]);
+        const saved = window.localStorage.getItem(storageKey);
+        if (saved === "true" || saved === "false") {
+            setIsDrawerOpen(saved === "true");
+        } else {
+            setIsDrawerOpen(window.innerWidth >= 1024);
+        }
+        setIsMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (isMounted) {
+            window.localStorage.setItem(storageKey, String(isDrawerOpen));
+        }
+    }, [isDrawerOpen, isMounted]);
 
     const toggleDrawer = () => setIsDrawerOpen((prev) => !prev);
     const closeDrawerOnMobile = () => {

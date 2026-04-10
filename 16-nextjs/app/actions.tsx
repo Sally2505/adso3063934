@@ -345,3 +345,55 @@ export async function getGamesAction(
         return { success: false, error: "No se pudieron cargar los juegos" };
     }
 }
+
+export async function getDashboardStatsAction() {
+    try {
+        const [allGames, consoles] = await Promise.all([
+            prisma.games.findMany({
+                include: { console: true }
+            }),
+            prisma.console.findMany({
+                include: { _count: { select: { games: true } } }
+            })
+        ]);
+
+        // Calcular estadísticas
+        const totalGames = allGames.length;
+        const totalPrice = allGames.reduce((sum, game) => sum + game.price, 0);
+        const averagePrice = totalGames > 0 ? totalPrice / totalGames : 0;
+
+        // Juegos por consola
+        const gamesByConsole = consoles.map(console => ({
+            id: console.id,
+            name: console.name,
+            count: console._count.games
+        }));
+
+        // Precio total por consola
+        const priceByConsole = consoles.map(console => {
+            const consolGames = allGames.filter(g => g.console_id === console.id);
+            const total = consolGames.reduce((sum, game) => sum + game.price, 0);
+            return {
+                id: console.id,
+                name: console.name,
+                totalPrice: total,
+                avgPrice: consolGames.length > 0 ? total / consolGames.length : 0,
+                gameCount: consolGames.length
+            };
+        });
+
+        return {
+            success: true,
+            stats: {
+                totalGames,
+                totalPrice: Math.round(totalPrice * 100) / 100,
+                averagePrice: Math.round(averagePrice * 100) / 100,
+                gamesByConsole,
+                priceByConsole
+            }
+        };
+    } catch (error) {
+        console.error("Error en getDashboardStatsAction:", error);
+        return { success: false, error: "No se pudieron cargar las estadísticas" };
+    }
+}

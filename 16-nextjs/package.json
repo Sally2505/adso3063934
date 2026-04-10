@@ -10,7 +10,8 @@
     "db:status": "prisma migrate status",
     "db:seed": "prisma db seed",
     "db:check": "tsx prisma/check-db.ts",
-    "db:reset": "prisma migrate reset --force --skip-generate --skip-seed && npm run db:seed && npm run db:check"
+    "db:reset": "prisma migrate reset --force --skip-generate --skip-seed && npm run db:seed && npm run db:check",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
