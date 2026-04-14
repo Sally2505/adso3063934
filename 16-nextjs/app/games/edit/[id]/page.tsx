@@ -6,6 +6,7 @@ import { CaretLeft } from "@phosphor-icons/react";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import { z } from "zod";
+import { getImageSrc } from "@/lib/images";
 
 type ConsoleOption = {
     id: number;
@@ -220,12 +221,7 @@ export default function EditGamePage({ params }: { params: Promise<{ id: string 
                     {/* PREVIEW */}
                     <div className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
                         <img
-                            src={
-                                preview ??
-                                (formData.cover === "no-cover.png" || formData.cover === "no-cover.jpeg"
-                                    ? defaultCover
-                                    : `/covers/${formData.cover}`)
-                            }
+                            src={preview ?? getImageSrc(formData.cover, defaultCover)}
                             alt="Preview"
                             className="w-20 h-28 object-cover rounded-lg shadow-md"
                             onError={(e) => { (e.target as HTMLImageElement).src = defaultCover; }}

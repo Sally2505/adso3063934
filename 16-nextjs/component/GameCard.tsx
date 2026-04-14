@@ -5,6 +5,7 @@ import type { MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Trash, PencilLine, Eye } from "@phosphor-icons/react";
 import { deleteGameAction } from "@/app/actions";
+import { getImageSrc } from "@/lib/images";
 import Swal from "sweetalert2";
 
 type GameCardProps = {
@@ -22,9 +23,8 @@ type GameCardProps = {
 export default function GameCard({ game }: GameCardProps) {
     const router = useRouter();
     const defaultCover = "/imgs/no-cover.png";
-    const isDefaultCover = game.cover === "no-cover.png" || game.cover === "no-cover.jpeg";
     const consoleName = game.console?.name ?? "Sin consola";
-    const coverSrc = isDefaultCover ? defaultCover : `/covers/${game.cover}`;
+    const coverSrc = getImageSrc(game.cover, defaultCover);
 
     const handleCardMove = (event: MouseEvent<HTMLDivElement>) => {
         const card = event.currentTarget;

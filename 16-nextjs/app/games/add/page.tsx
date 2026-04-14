@@ -95,6 +95,9 @@ export default function AddGamePage() {
         data.append("price", String(formData.price));
         data.append("console_id", String(formData.console_id));
         data.append("description", formData.description);
+        if (file) {
+            data.append("cover", file);
+        }
 
         // 4. Llamar action
         const res = await createGameAction(data);

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { z } from "zod";
+import { getImageSrc } from "@/lib/images";
 
 const editConsoleSchema = z.object({
     name: z.string().min(2, "El nombre es obligatorio"),
@@ -136,12 +137,7 @@ export default function EditConsoleForm({ consoleId, initialData }: EditConsoleF
 
                     <div className="flex items-center gap-4 rounded-xl border border-white/5 bg-white/5 p-4">
                         <img
-                            src={
-                                preview ??
-                                (formData.image === "no-cover.png" || formData.image === "no-cover.jpeg"
-                                    ? defaultImage
-                                    : `/covers/${formData.image}`)
-                            }
+                            src={preview ?? getImageSrc(formData.image, defaultImage)}
                             alt="Preview"
                             className="h-28 w-20 rounded-lg object-cover shadow-md"
                             onError={(e) => { (e.target as HTMLImageElement).src = defaultImage; }}

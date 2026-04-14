@@ -3,6 +3,7 @@ import { PrismaNeon } from '@prisma/adapter-neon';
 import Link from 'next/link';
 import { CaretLeft } from "@phosphor-icons/react/dist/ssr";
 import GameDetailsCover from "@/component/GameDetailsCover";
+import { getImageSrc } from "@/lib/images";
 
 const prisma = new PrismaClient({
     adapter: new PrismaNeon({ connectionString: process.env.DATABASE_URL! })
@@ -29,7 +30,7 @@ export default async function GameDetailsPage({ params }: { params: Promise<{ id
 
             <div className="flex flex-col md:flex-row gap-8 bg-black/40 backdrop-blur-md p-8 rounded-3xl border border-white/10">
                 <GameDetailsCover
-                    src={isDefaultCover ? "/imgs/no-cover.png" : `/covers/${game.cover}`}
+                    src={getImageSrc(game.cover)}
                     alt={game.title}
                 />
                 <div className="flex-1">

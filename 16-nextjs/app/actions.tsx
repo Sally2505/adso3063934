@@ -4,7 +4,7 @@ import { z } from "zod";
 import { Prisma, PrismaClient } from '@/src/generated/prisma';
 import { PrismaNeon } from '@prisma/adapter-neon';
 import { revalidatePath } from 'next/cache';
-import { mkdir, unlink, writeFile } from "fs/promises";
+import { unlink } from "fs/promises";
 import path from 'path';
 
 const prisma = new PrismaClient({
@@ -30,22 +30,27 @@ const consoleSchema = z.object({
 const coversDirectory = path.join(process.cwd(), "public", "covers");
 const defaultCovers = new Set(["no-cover.png", "no-cover.jpeg"]);
 
+function arrayBufferToBase64(buffer: ArrayBuffer) {
+    let binary = "";
+    const bytes = new Uint8Array(buffer);
+    const chunkSize = 0x8000;
+
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+        const chunk = bytes.subarray(i, i + chunkSize);
+        binary += String.fromCharCode(...chunk);
+    }
+
+    return btoa(binary);
+}
+
 async function saveCoverFile(file: File) {
-    await mkdir(coversDirectory, { recursive: true });
-
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const extension = path.extname(file.name) || ".jpg";
-    const baseName = path.basename(file.name, extension).replace(/[^a-zA-Z0-9-_]/g, "-");
-    const fileName = `${Date.now()}-${baseName}${extension}`;
-    const filePath = path.join(coversDirectory, fileName);
-
-    await writeFile(filePath, buffer);
-    return fileName;
+    const arrayBuffer = await file.arrayBuffer();
+    const base64 = arrayBufferToBase64(arrayBuffer);
+    return `data:${file.type || "image/png"};base64,${base64}`;
 }
 
 async function deleteCoverFile(fileName: string) {
-    if (!fileName || defaultCovers.has(fileName)) return;
+    if (!fileName || fileName.startsWith("data:") || defaultCovers.has(fileName)) return;
 
     try {
         await unlink(path.join(coversDirectory, fileName));

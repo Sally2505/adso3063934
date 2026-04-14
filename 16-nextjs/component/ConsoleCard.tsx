@@ -6,6 +6,7 @@ import { Eye, PencilLine, Trash } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { deleteConsoleAction } from "@/app/actions";
+import { getImageSrc } from "@/lib/images";
 
 type ConsoleCardProps = {
     consoleItem: {
@@ -19,8 +20,7 @@ type ConsoleCardProps = {
 export default function ConsoleCard({ consoleItem }: ConsoleCardProps) {
     const router = useRouter();
     const defaultImage = "/imgs/no-cover.png";
-    const isDefaultImage = consoleItem.image === "no-cover.png" || consoleItem.image === "no-cover.jpeg";
-    const imageSrc = isDefaultImage ? defaultImage : `/covers/${consoleItem.image}`;
+    const imageSrc = getImageSrc(consoleItem.image, defaultImage);
 
     const handleCardMove = (event: MouseEvent<HTMLDivElement>) => {
         const card = event.currentTarget;
