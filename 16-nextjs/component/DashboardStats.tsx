@@ -45,7 +45,7 @@ export default function DashboardStats() {
                 if (result.success) {
                     setStats(result.stats);
                 } else {
-                    setError(result.error);
+                    setError(result.error ?? 'Error cargando estadísticas');
                 }
             } catch (err) {
                 setError('Error cargando estadísticas');
