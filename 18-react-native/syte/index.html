@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC Comics Login</title>
+    <style>
+        @font-face {
+            font-family: "DcTitle";
+            src: url("fonts/gotham.ttf") format("truetype");
+            font-weight: 900;
+        }
+
+        @font-face {
+            font-family: "DcText";
+            src: url("fonts/gothamknightscondital.ttf") format("truetype");
+            font-weight: 900;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow: hidden;
+            color: #0079ff;
+            background: #111;
+            font-family: "DcTitle", "Impact", "Arial Black", sans-serif;
+        }
+
+        .screen {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 412px;
+            height: 917px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 86px;
+            background: #111 url("../imgs/wallpaper 1.png") center / cover no-repeat;
+            transform: translate(-50%, -50%) scale(var(--app-scale, 1));
+            transform-origin: center;
+        }
+
+        .small-logo {
+            position: absolute;
+            top: 6px;
+            left: 4px;
+            width: 48px;
+            height: 48px;
+            display: block;
+        }
+
+        .small-logo img,
+        .logo-mark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .card {
+            width: 314px;
+            min-height: 431px;
+            padding: 21px 21px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(183, 218, 219, 0.76);
+            border-radius: 10px;
+            box-shadow: 0 2px 7px rgba(3, 79, 116, 0.18);
+        }
+
+        .logo-mark {
+            width: 154px;
+            height: 154px;
+            display: block;
+        }
+
+        .brand {
+            margin-top: 27px;
+            color: #0785ff;
+            font-size: 42px;
+            line-height: 1;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .question {
+            width: 285px;
+            margin-top: 36px;
+            color: #0d1f2a;
+            font-size: 30px;
+            line-height: 1.02;
+            text-align: center;
+            text-transform: uppercase;
+            font-style: italic;
+            font-weight: 900;
+            font-family: "DcText", "Impact", "Arial Black", sans-serif;
+            transform: scaleX(0.86);
+            transform-origin: center top;
+        }
+
+        .actions {
+            width: 284px;
+            margin-top: 85px;
+            display: flex;
+            justify-content: space-between;
+            gap: 42px;
+        }
+
+        .btn {
+            width: 122px;
+            height: 67px;
+            display: grid;
+            place-items: center;
+            border: 0;
+            border-radius: 10px;
+            color: #0785ff;
+            background: rgba(170, 229, 231, 0.842);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+            font-family: inherit;
+            font-size: 30px;
+            letter-spacing: -1px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background:rgba(199, 226, 229, 0.94);
+        }
+
+    </style>
+</head>
+
+<body>
+    <main class="screen">
+        <a class="small-logo" href="#" aria-label="Abrir sidebar">
+            <img src="../imgs/DC_Comics_logo.svg" alt="">
+        </a>
+
+        <section class="card" aria-label="Login DC Comics">
+            <div class="logo-mark" aria-hidden="true">
+                <img src="../imgs/DC_Comics_logo.svg" alt="">
+            </div>
+            <h1 class="brand">DC Comics</h1>
+            <p class="question" id="dcFact">
+                Did you know that the initials DC come from Detective Comics,
+                the legendary magazine where Batman first appeared?
+            </p>
+        </section>
+
+        <div class="actions" aria-label="Acciones">
+            <button class="btn" type="button">Login</button>
+            <button class="btn" type="button">Register</button>
+        </div>
+    </main>
+
+    <script>
+        const dcTopics = [
+            "DC_Comics",
+            "Batman",
+            "Superman",
+            "Wonder_Woman",
+            "The_Flash",
+            "Green_Lantern",
+            "Aquaman",
+            "Justice_League",
+            "Detective_Comics",
+            "Action_Comics"
+        ];
+
+        const fallbackFacts = [
+            "Did you know that DC Comics was founded as National Allied Publications in 1934?",
+            "Did you know that Superman first appeared in Action Comics number one in 1938?",
+            "Did you know that Batman first appeared in Detective Comics number twenty-seven in 1939?",
+            "Did you know that Wonder Woman made her first appearance in All Star Comics number eight?",
+            "Did you know that the Justice League first appeared in The Brave and the Bold number twenty-eight?"
+        ];
+
+        const factElement = document.getElementById("dcFact");
+        const appWidth = 412;
+        const appHeight = 917;
+
+        function getRandomItem(items) {
+            return items[Math.floor(Math.random() * items.length)];
+        }
+
+        function keepAndroidCompactSize() {
+            const scale = Math.min(
+                window.innerWidth / appWidth,
+                window.innerHeight / appHeight,
+                1
+            );
+
+            document.documentElement.style.setProperty("--app-scale", scale);
+        }
+
+        function getShortFact(summary) {
+            const sentences = summary
+                .replace(/\s+/g, " ")
+                .split(/(?<=\.)\s+/)
+                .filter(sentence => sentence.length > 45 && sentence.length < 185);
+
+            return sentences[0] || summary.slice(0, 170);
+        }
+
+        async function loadDcFact() {
+            const topic = getRandomItem(dcTopics);
+            const apiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${topic}`;
+
+            try {
+                const response = await fetch(apiUrl);
+
+                if (!response.ok) {
+                    throw new Error("The DC fact API did not respond.");
+                }
+
+                const data = await response.json();
+                factElement.textContent = getShortFact(data.extract);
+            } catch (error) {
+                factElement.textContent = getRandomItem(fallbackFacts);
+            }
+        }
+
+        keepAndroidCompactSize();
+        loadDcFact();
+        window.addEventListener("resize", keepAndroidCompactSize);
+    </script>
+</body>
+
+</html>
