@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DC Comics Login</title>
+    <title>DC Comics Register</title>
     <style>
         @font-face {
             font-family: "DcTitle";
@@ -33,9 +33,9 @@
         body {
             min-height: 100vh;
             overflow: hidden;
-            color: #0079ff;
+            color: #0785ff;
             background: #06111d;
-            font-family: "DcTitle", "Impact", "Arial Black", sans-serif;
+            font-family: "DcText", "Impact", "Arial Black", sans-serif;
         }
 
         .screen {
@@ -48,7 +48,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding-top: 83px;
+            padding-top: 82px;
             background: #111 url("../imgs/wallpaper 1.png") center / cover no-repeat;
             transform: translate(-50%, -50%) scale(var(--app-scale, 1));
             transform-origin: center;
@@ -63,7 +63,18 @@
             display: block;
         }
 
+        .back-btn {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            width: 42px;
+            height: 42px;
+            display: block;
+            text-decoration: none;
+        }
+
         .small-logo img,
+        .back-btn img,
         .logo-mark img {
             width: 100%;
             height: 100%;
@@ -73,8 +84,8 @@
 
         .card {
             width: 316px;
-            min-height: 444px;
-            padding: 17px 20px 28px;
+            min-height: 510px;
+            padding: 19px 24px 24px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -89,88 +100,101 @@
             display: block;
         }
 
-        .brand {
-            margin-top: 17px;
+        .register-title {
+            margin-top: 12px;
             color: #0785ff;
-            font-size: 42px;
+            font-size: 23px;
             line-height: 1;
-            letter-spacing: 0;
-            text-transform: uppercase;
-        }
-
-        .question {
-            width: 274px;
-            margin-top: 38px;
-            color: #ffffff;
-            font-size: 24px;
-            line-height: 1.38;
-            text-align: center;
-            text-transform: uppercase;
             font-style: italic;
             font-weight: 900;
-            font-family: "DcText", "Impact", "Arial Black", sans-serif;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.42);
-            transform: scaleX(0.82);
-            transform-origin: center top;
+            text-transform: uppercase;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            transform: scaleX(0.84);
+            transform-origin: center;
         }
 
-        .actions {
-            width: 284px;
-            margin-top: 70px;
+        .register-form {
+            width: 100%;
+            margin-top: 25px;
             display: flex;
-            justify-content: space-between;
-            gap: 54px;
+            flex-direction: column;
+            gap: 31px;
         }
 
-        .btn {
-            width: 116px;
+        .field {
+            width: 100%;
+            height: 48px;
+            padding: 0 14px;
+            border: 0;
+            border-radius: 9px;
+            outline: none;
+            color: #111;
+            background: rgba(246, 242, 244, 0.95);
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04), 0 2px 5px rgba(0, 0, 0, 0.18);
+            font-family: "DcText", "Impact", "Arial Black", sans-serif;
+            font-size: 20px;
+            font-style: italic;
+            font-weight: 900;
+        }
+
+        .field::placeholder {
+            color: #111;
+            opacity: 1;
+        }
+
+        .register-btn {
+            width: 132px;
             height: 65px;
+            margin-top: 29px;
             display: grid;
             place-items: center;
             border: 0;
             border-radius: 10px;
             color: #0785ff;
-            background: rgba(224, 238, 250, 0.94);
+            background: rgba(4, 33, 59, 0.9);
             box-shadow: 0 4px 8px rgba(0, 12, 26, 0.32);
             font-family: "DcText", "Impact", "Arial Black", sans-serif;
-            font-size: 29px;
+            font-size: 28px;
             font-style: italic;
             font-weight: 900;
-            letter-spacing: 0;
             text-transform: uppercase;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
             transform: scaleX(0.88);
             cursor: pointer;
         }
 
-        .btn:hover {
-            background: rgba(4, 33, 59, 0.9);
+        .register-btn:hover {
+            background: rgba(7, 46, 82, 0.94);
         }
-
     </style>
 </head>
 
 <body>
     <main class="screen">
-        <a class="small-logo" href="#" aria-label="Abrir sidebar">
+        <a class="small-logo" href="index.html" aria-label="Volver al inicio">
             <img src="../imgs/DC_Comics_logo.svg" alt="">
         </a>
 
-        <section class="card" aria-label="Login DC Comics">
+        <a class="back-btn" href="index.html" aria-label="Volver">
+            <img src="../imgs/return button.png" alt="">
+        </a>
+
+        <section class="card" aria-label="Formulario de registro DC Comics">
             <div class="logo-mark" aria-hidden="true">
                 <img src="../imgs/DC_Comics_logo.svg" alt="">
             </div>
-            <h1 class="brand">DC Comics</h1>
-            <p class="question" id="dcFact">
-                Did you know that the initials DC come from Detective Comics,
-                the legendary magazine where Batman first appeared?
-            </p>
+
+            <h1 class="register-title">Register here</h1>
+
+            <form class="register-form">
+                <input class="field" type="text" name="name" placeholder="Name" autocomplete="name">
+                <input class="field" type="email" name="email" placeholder="Email" autocomplete="email">
+                <input class="field" type="password" name="password" placeholder="Password" autocomplete="new-password">
+                <input class="field" type="password" name="confirm-password" placeholder="Confirm password" autocomplete="new-password">
+            </form>
         </section>
 
-        <div class="actions" aria-label="Acciones">
-            <button class="btn" type="button" onclick="location.href='login.html'">Login</button>
-            <button class="btn" type="button" onclick="location.href='register.html'">Register</button>
-        </div>
+        <button class="register-btn" type="button">Register</button>
     </main>
 
     <script>
