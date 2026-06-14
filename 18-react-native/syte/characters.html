@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Characters</title>
+    <link rel="stylesheet" href="sections.css">
+</head>
+
+<body>
+    <main class="screen bg-characters">
+        <button class="small-logo" type="button" aria-label="Abrir sidebar"><img src="../imgs/DC_Comics_logo.svg" alt=""></button>
+        <a class="plus-icon" href="character-add.html">+</a>
+        <div class="sidebar-shade" aria-hidden="true"></div>
+        <aside class="sidebar" aria-label="Menu lateral">
+            <button class="sidebar-logo" type="button" aria-label="Cerrar sidebar"><img src="../imgs/DC_Comics_logo.svg" alt=""></button>
+            <nav class="sidebar-menu">
+                <a class="sidebar-option" href="dashboard.html"><img src="../imgs/00af94715567fa713114e67d293d6f97.jpg" alt=""><span>Dashboard</span></a>
+                <a class="sidebar-option" href="profile.html"><img src="../imgs/cf4ae4053175c8f4e54bfa0992527bab.jpg" alt=""><span>My profile</span></a>
+                <a class="sidebar-option" href="characters.html"><img src="../imgs/Profile.webp" alt=""><span>Characters</span></a>
+                <a class="sidebar-option" href="cities.html"><img src="../imgs/Central_City_Flash.png" alt=""><span>Cities</span></a>
+                <a class="sidebar-option" href="teams.html"><img src="../imgs/Los_Jovenes_Titanes.avif" alt=""><span>Teams</span></a>
+            </nav>
+        </aside>
+
+        <section class="content">
+            <div class="list-header">
+                <div class="section-emblem"><img src="../imgs/icon characters.png" alt=""></div>
+                <h1 class="page-title">Characters</h1>
+                <p class="sub-title">Welcome to characters section</p>
+            </div>
+            <div class="list-panel">
+                <article class="list-card"><img src="../imgs/Metropolis_Superman.jpg" alt=""><img class="avatar" src="../imgs/superman.png" alt=""><span class="name">Superman</span><span class="tools"><a class="tool-dot details" href="character-details.html" aria-label="Detalles">Detalles</a><a class="tool-dot edit" href="character-update.html" aria-label="Editar">Editar</a><span class="tool-dot delete" aria-label="Eliminar">Eliminar</span></span></article>
+                <article class="list-card"><img src="../imgs/Central_City_Flash.png" alt=""><img class="avatar" src="../imgs/flash.png" alt=""><span class="name">Flash</span><span class="tools"><a class="tool-dot details" href="character-details.html" aria-label="Detalles">Detalles</a><a class="tool-dot edit" href="character-update.html" aria-label="Editar">Editar</a><span class="tool-dot delete" aria-label="Eliminar">Eliminar</span></span></article>
+                <article class="list-card"><img src="../imgs/Themyscira_Wonder_Woman.png" alt=""><img class="avatar" src="../imgs/wonder woman.png" alt=""><span class="name">Wonder Woman</span><span class="tools"><a class="tool-dot details" href="character-details.html" aria-label="Detalles">Detalles</a><a class="tool-dot edit" href="character-update.html" aria-label="Editar">Editar</a><span class="tool-dot delete" aria-label="Eliminar">Eliminar</span></span></article>
+                <article class="list-card"><img src="../imgs/Gotham.jpg" alt=""><img class="avatar" src="../imgs/the batman who laughs.png" alt=""><span class="name">The Batman who Laughs</span><span class="tools"><a class="tool-dot details" href="character-details.html" aria-label="Detalles">Detalles</a><a class="tool-dot edit" href="character-update.html" aria-label="Editar">Editar</a><span class="tool-dot delete" aria-label="Eliminar">Eliminar</span></span></article>
+                <article class="list-card"><img src="../imgs/Coast_City_Linterna_Verde.png" alt=""><img class="avatar" src="../imgs/green lantern.png" alt=""><span class="name">Green Lantern</span><span class="tools"><a class="tool-dot details" href="character-details.html" aria-label="Detalles">Detalles</a><a class="tool-dot edit" href="character-update.html" aria-label="Editar">Editar</a><span class="tool-dot delete" aria-label="Eliminar">Eliminar</span></span></article>
+            </div>
+        </section>
+
+        <nav class="bottom-nav">
+            <a class="nav-link" href="dashboard.html">Dashboard</a>
+            <a class="nav-link" href="profile.html">My profile</a>
+            <a class="nav-link active" href="characters.html">Characters</a>
+            <a class="nav-link" href="cities.html">Cities</a>
+            <a class="nav-link" href="teams.html">Teams</a>
+        </nav>
+    </main>
+    <script src="sections.js"></script>
+</body>
+
+</html>

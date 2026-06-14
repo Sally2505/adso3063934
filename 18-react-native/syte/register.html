@@ -56,11 +56,16 @@
 
         .small-logo {
             position: absolute;
+            z-index: 8;
             top: 6px;
             left: 4px;
             width: 48px;
             height: 48px;
             display: block;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
         }
 
         .back-btn {
@@ -74,12 +79,136 @@
         }
 
         .small-logo img,
+        .sidebar-logo img,
+        .sidebar-option img,
         .back-btn img,
         .logo-mark img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             display: block;
+        }
+
+        .sidebar-option img {
+            object-fit: cover;
+        }
+
+        .sidebar-shade {
+            position: absolute;
+            z-index: 18;
+            inset: 0;
+            background: rgba(4, 33, 59, 0.46);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.24s ease;
+        }
+
+        .sidebar {
+            position: absolute;
+            z-index: 19;
+            top: 0;
+            left: 0;
+            width: 297px;
+            height: 100%;
+            padding: 101px 13px 0;
+            background: rgba(4, 33, 59, 0.93);
+            transform: translateX(-100%);
+            transition: transform 0.24s ease;
+            box-shadow: 12px 0 18px rgba(0, 0, 0, 0.24);
+        }
+
+        .screen.sidebar-open .sidebar {
+            transform: translateX(0);
+        }
+
+        .screen.sidebar-open .sidebar-shade {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .sidebar-logo {
+            position: absolute;
+            top: 8px;
+            right: 11px;
+            width: 48px;
+            height: 48px;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .sidebar-logo img {
+            object-fit: contain;
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .sidebar-option {
+            position: relative;
+            width: 270px;
+            height: 96px;
+            overflow: hidden;
+            border-radius: 18px;
+            color: #ffffff;
+            text-decoration: none;
+            background: #08213d;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-option::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(4, 33, 59, 0.18);
+            transition: background 0.18s ease;
+        }
+
+        .sidebar-option:hover::after,
+        .sidebar-option:focus-visible::after,
+        .sidebar-option:active::after {
+            background: rgba(7, 133, 255, 0.44);
+        }
+
+        .sidebar-option span {
+            position: absolute;
+            z-index: 2;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            color: #ffffff;
+            font-family: "DcTitle", "Impact", "Arial Black", sans-serif;
+            font-size: 30px;
+            line-height: 1;
+            text-transform: uppercase;
+            -webkit-text-stroke: 1.4px #08213d;
+            text-shadow:
+                2px 2px 0 #08213d,
+                0 3px 5px rgba(0, 0, 0, 0.66);
+        }
+
+        .sidebar-option.dashboard img {
+            object-position: center 45%;
+        }
+
+        .sidebar-option.profile img {
+            object-position: center 42%;
+        }
+
+        .sidebar-option.characters img {
+            object-position: center 50%;
+        }
+
+        .sidebar-option.cities img {
+            object-position: center 48%;
+        }
+
+        .sidebar-option.teams img {
+            object-position: center 42%;
         }
 
         .card {
@@ -171,9 +300,38 @@
 
 <body>
     <main class="screen">
-        <a class="small-logo" href="index.html" aria-label="Volver al inicio">
+        <button class="small-logo" type="button" aria-label="Abrir sidebar">
             <img src="../imgs/DC_Comics_logo.svg" alt="">
-        </a>
+        </button>
+
+        <div class="sidebar-shade" aria-hidden="true"></div>
+        <aside class="sidebar" aria-label="Menu lateral">
+            <button class="sidebar-logo" type="button" aria-label="Cerrar sidebar">
+                <img src="../imgs/DC_Comics_logo.svg" alt="">
+            </button>
+            <nav class="sidebar-menu">
+                <a class="sidebar-option dashboard" href="dashboard.html">
+                    <img src="../imgs/00af94715567fa713114e67d293d6f97.jpg" alt="">
+                    <span>Dashboard</span>
+                </a>
+                <a class="sidebar-option profile" href="profile.html">
+                    <img src="../imgs/cf4ae4053175c8f4e54bfa0992527bab.jpg" alt="">
+                    <span>My profile</span>
+                </a>
+                <a class="sidebar-option characters" href="characters.html">
+                    <img src="../imgs/Profile.webp" alt="">
+                    <span>Characters</span>
+                </a>
+                <a class="sidebar-option cities" href="cities.html">
+                    <img src="../imgs/Central_City_Flash.png" alt="">
+                    <span>Cities</span>
+                </a>
+                <a class="sidebar-option teams" href="teams.html">
+                    <img src="../imgs/Los_Jovenes_Titanes.avif" alt="">
+                    <span>Teams</span>
+                </a>
+            </nav>
+        </aside>
 
         <a class="back-btn" href="index.html" aria-label="Volver">
             <img src="../imgs/return button.png" alt="">
@@ -213,6 +371,15 @@
 
         keepAndroidCompactSize();
         window.addEventListener("resize", keepAndroidCompactSize);
+
+        const screen = document.querySelector(".screen");
+        const sidebarButtons = document.querySelectorAll(".small-logo, .sidebar-logo, .sidebar-shade");
+
+        sidebarButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                screen.classList.toggle("sidebar-open");
+            });
+        });
     </script>
 </body>
 
