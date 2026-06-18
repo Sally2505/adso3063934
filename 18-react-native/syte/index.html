@@ -321,10 +321,17 @@
             background: rgba(7, 133, 255, 0.42);
         }
 
+        /* Ocultar sidebar en páginas sin autenticación */
+        body.no-sidebar .small-logo,
+        body.no-sidebar .sidebar,
+        body.no-sidebar .sidebar-shade {
+            display: none;
+        }
+
     </style>
 </head>
 
-<body>
+<body class="no-sidebar">
     <main class="screen">
         <button class="small-logo" type="button" aria-label="Abrir sidebar">
             <img src="../imgs/DC_Comics_logo.svg" alt="">
@@ -373,21 +380,6 @@
         <div class="actions" aria-label="Acciones">
             <button class="btn" type="button" onclick="location.href='login.html'">Login</button>
             <button class="btn" type="button" onclick="location.href='register.html'">Register</button>
-        </div>
-
-        <div class="section-preview" aria-label="Secciones destacadas">
-            <a class="section-pill" href="characters.html">
-                <img src="../imgs/Profile.webp" alt="">
-                <span>Characters</span>
-            </a>
-            <a class="section-pill" href="cities.html">
-                <img src="../imgs/Central_City_Flash.png" alt="">
-                <span>Cities</span>
-            </a>
-            <a class="section-pill" href="teams.html">
-                <img src="../imgs/Los_Jovenes_Titanes.avif" alt="">
-                <span>Teams</span>
-            </a>
         </div>
     </main>
 

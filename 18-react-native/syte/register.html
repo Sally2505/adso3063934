@@ -295,10 +295,22 @@
         .register-btn:hover {
             background: rgba(7, 46, 82, 0.94);
         }
+
+        /* Ocultar sidebar en páginas sin autenticación */
+        body.no-sidebar .small-logo,
+        body.no-sidebar .sidebar,
+        body.no-sidebar .sidebar-shade {
+            display: none;
+        }
+
+        /* Mostrar back-btn en páginas de login/register */
+        body.no-sidebar .back-btn {
+            display: block;
+        }
     </style>
 </head>
 
-<body>
+<body class="no-sidebar">
     <main class="screen">
         <button class="small-logo" type="button" aria-label="Abrir sidebar">
             <img src="../imgs/DC_Comics_logo.svg" alt="">

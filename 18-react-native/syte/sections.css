@@ -133,7 +133,7 @@ body {
     flex: 1;
     min-height: 0;
     padding: 60px 24px 140px;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 .page-title {
