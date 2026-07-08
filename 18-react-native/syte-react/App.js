@@ -177,7 +177,8 @@ const toCharacterPayload = (item) => ({
   history: emptyToNull(item.history)
 });
 const toCityPayload = (item, preset = {}) => ({
-  photo_url: emptyToNull(item.photo_url || preset.photo_url),
+  photo: item.photo,
+  photo_url: isLocalUri(item.photo_url) ? null : emptyToNull(item.photo_url || preset.photo_url),
   name: emptyToNull(item.name || preset.name),
   state: emptyToNull(item.state || preset.state),
   country: emptyToNull(item.country || preset.country),
@@ -185,7 +186,8 @@ const toCityPayload = (item, preset = {}) => ({
   population_count: Number(item.population_count) || 0
 });
 const toTeamPayload = (item, preset = {}) => ({
-  image_url: emptyToNull(item.image_url || preset.image_url),
+  image: item.image,
+  image_url: isLocalUri(item.image_url) ? null : emptyToNull(item.image_url || preset.image_url),
   name: emptyToNull(item.name || preset.name),
   type: emptyToNull(item.type || preset.type),
   headquarters: emptyToNull(item.headquarters || preset.headquarters),
@@ -197,6 +199,31 @@ const sourceFrom = (value, fallback) => {
   if (value.startsWith("http") || value.startsWith("file:") || value.startsWith("content:")) return { uri: value };
   const key = Object.keys(imageMap).find((name) => value.includes(name));
   return key ? imageMap[key] : fallback;
+};
+const pickLocalImage = async (prefix = "image") => {
+  const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  if (!permission.granted) {
+    Alert.alert("Permiso necesario", "Permite acceso a la galeria para seleccionar una imagen.");
+    return null;
+  }
+  const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0.7, allowsEditing: true });
+  const asset = result.assets?.[0];
+  if (!asset?.uri) return null;
+  return {
+    uri: asset.uri,
+    name: asset.fileName || `${prefix}-${Date.now()}.jpg`,
+    type: asset.mimeType || "image/jpeg"
+  };
+};
+const parseNameList = (value) => {
+  if (Array.isArray(value)) return value;
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return value.split(",").map((item) => item.trim()).filter(Boolean);
+  }
 };
 
 function findCity(nameOrId) {
@@ -342,7 +369,8 @@ function DataProvider({ children }) {
       const preset = findCity(item.name || "") || cityPresets[0];
       const existingId = isApiId(item.id) ? item.id : null;
       const payload = toCityPayload(item, preset);
-      const optimisticRecord = { ...preset, ...payload, id: existingId || `local-${Date.now()}`, image: sourceFrom(payload.photo_url, preset.image) };
+      const optimisticPhoto = item.photo_url || payload.photo_url;
+      const optimisticRecord = { ...preset, ...payload, photo_url: optimisticPhoto, id: existingId || `local-${Date.now()}`, image: sourceFrom(optimisticPhoto, preset.image) };
       setCities((current) => existingId ? current.map((city) => String(city.id) === String(existingId) ? optimisticRecord : city) : [...current, optimisticRecord]);
       try {
         if (existingId) await updateCity(existingId, payload);
@@ -357,7 +385,8 @@ function DataProvider({ children }) {
       const preset = findTeam(item.name || "") || teamPresets[0];
       const existingId = isApiId(item.id) ? item.id : null;
       const payload = toTeamPayload(item, preset);
-      const optimisticRecord = { ...preset, ...payload, id: existingId || `local-${Date.now()}`, image: sourceFrom(payload.image_url, preset.image) };
+      const optimisticImage = item.image_url || payload.image_url;
+      const optimisticRecord = { ...preset, ...payload, image_url: optimisticImage, id: existingId || `local-${Date.now()}`, image: sourceFrom(optimisticImage, preset.image) };
       setTeams((current) => existingId ? current.map((team) => String(team.id) === String(existingId) ? optimisticRecord : team) : [...current, optimisticRecord]);
       try {
         if (existingId) await updateTeam(existingId, payload);
@@ -694,19 +723,12 @@ function CharacterFormScreen({ navigation, route }) {
 
   const set = (key, value) => setForm((state) => ({ ...state, [key]: value }));
   const pickImage = async () => {
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) return Alert.alert("Permiso necesario", "Permite acceso a la galeria para seleccionar una imagen.");
-    const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0.7, allowsEditing: true });
-    const asset = result.assets?.[0];
-    if (asset?.uri) {
+    const photo = await pickLocalImage("character");
+    if (photo?.uri) {
       setForm((state) => ({
         ...state,
-        photo_url: asset.uri,
-        photo: {
-          uri: asset.uri,
-          name: asset.fileName || `character-${Date.now()}.jpg`,
-          type: asset.mimeType || "image/jpeg"
-        }
+        photo_url: photo.uri,
+        photo
       }));
     }
   };
@@ -803,7 +825,8 @@ function CitiesScreen({ navigation }) {
 function CityDetailsScreen({ navigation, route }) {
   const { cities, characters } = useData();
   const city = cities.find((item) => String(item.id) === String(route.params?.id) || normalize(item.name) === normalize(route.params?.id)) || findCity(route.params?.id);
-  const residents = characters.filter((character) => normalize(character.city) === normalize(city.name));
+  const selectedNames = parseNameList(city.population_characters);
+  const residents = characters.filter((character) => normalize(character.city) === normalize(city.name) || selectedNames.some((name) => normalize(name) === normalize(character.name)));
   return (
     <Screen bg="cities" scroll>
       <Header navigation={navigation} back />
@@ -828,11 +851,13 @@ function CityDetailsScreen({ navigation, route }) {
 }
 
 function CityFormScreen({ navigation, route }) {
-  const { cities, saveCity } = useData();
+  const { cities, characters, saveCity } = useData();
   const current = cities.find((item) => String(item.id) === String(route.params?.id) || normalize(item.name) === normalize(route.params?.id));
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
     id: current?.id,
+    photo: null,
+    photo_url: current?.photo_url || "",
     name: current?.name || cityPresets[0].name,
     country: current?.country || cityPresets[0].country,
     state: current?.state || cityPresets[0].state,
@@ -840,7 +865,21 @@ function CityFormScreen({ navigation, route }) {
     population_count: current?.population_count?.toString() || ""
   });
   const preset = findCity(form.name);
+  const selectedCharacters = parseNameList(form.population_characters);
+  const cityImage = sourceFrom(form.photo_url, preset.image);
   const set = (key, value) => setForm((state) => ({ ...state, [key]: value }));
+  const pickImage = async () => {
+    const photo = await pickLocalImage("city");
+    if (photo?.uri) {
+      setForm((state) => ({ ...state, photo_url: photo.uri, photo }));
+    }
+  };
+  const toggleCharacter = (name) => {
+    const exists = selectedCharacters.some((item) => normalize(item) === normalize(name));
+    const next = exists ? selectedCharacters.filter((item) => normalize(item) !== normalize(name)) : [...selectedCharacters, name];
+    set("population_characters", next.join(", "));
+    set("population_count", String(next.length));
+  };
   const submit = async () => {
     setSaving(true);
     try {
@@ -858,20 +897,35 @@ function CityFormScreen({ navigation, route }) {
       <Header navigation={navigation} back />
       <PageTitle title="City" subtitle={preset.name} />
       <View style={styles.cityFormCard}>
-        <Image source={preset.image} style={StyleSheet.absoluteFillObject} />
+        <Image source={cityImage} style={StyleSheet.absoluteFillObject} />
         <View style={styles.formShade} />
         <View style={styles.formStack}>
+          <TouchableOpacity style={styles.uploadBanner} onPress={pickImage} activeOpacity={0.86}>
+            <Image source={cityImage} style={styles.uploadBannerImage} />
+            <View style={styles.uploadBannerShade} />
+            <Text style={styles.uploadBannerText}>{form.photo_url ? "Change image" : "Upload image"}</Text>
+          </TouchableOpacity>
           <FieldLabel>Name:</FieldLabel>
           <Input value={form.name} onChangeText={(value) => {
             const next = findCity(value);
-            setForm({ ...form, name: value, country: next.country, state: next.state });
+            setForm({ ...form, name: value, country: next.country, state: next.state, photo_url: form.photo ? form.photo_url : next.photo_url });
           }} placeholder="Name" />
           <FieldLabel>Country:</FieldLabel>
           <Input value={form.country} onChangeText={(value) => set("country", value)} placeholder="Country" />
           <FieldLabel>State:</FieldLabel>
           <Input value={form.state} onChangeText={(value) => set("state", value)} placeholder="State" />
           <FieldLabel>Population characters:</FieldLabel>
-          <Input value={form.population_characters} onChangeText={(value) => set("population_characters", value)} placeholder="Population characters" />
+          <View style={styles.photoChoiceGrid}>
+            {characters.length ? characters.map((character) => {
+              const selected = selectedCharacters.some((name) => normalize(name) === normalize(character.name));
+              return (
+                <TouchableOpacity key={character.id || character.name} style={[styles.photoChoice, selected && styles.photoChoiceSelected]} activeOpacity={0.86} onPress={() => toggleCharacter(character.name)}>
+                  <Image source={sourceFrom(character.photo_url, assets.icons.characters)} style={styles.photoChoiceImage} />
+                  <Text style={styles.photoChoiceText} numberOfLines={2}>{character.name}</Text>
+                </TouchableOpacity>
+              );
+            }) : <Empty text="No characters yet." compact />}
+          </View>
           <FieldLabel>Population count:</FieldLabel>
           <Input value={form.population_count} onChangeText={(value) => set("population_count", value)} placeholder="Population count" keyboardType="numeric" />
         </View>
@@ -937,6 +991,7 @@ function TeamFormScreen({ navigation, route }) {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
     id: defaultTeam?.id,
+    image: null,
     image_url: defaultTeam?.image_url || "",
     name: defaultTeam?.name || "",
     type: defaultTeam?.type || "",
@@ -949,10 +1004,16 @@ function TeamFormScreen({ navigation, route }) {
     setForm((state) => ({
       ...state,
       name: value,
-      image_url: preset.image_url,
+      image_url: state.image ? state.image_url : preset.image_url,
       type: preset.type,
       headquarters: preset.headquarters
     }));
+  };
+  const pickImage = async () => {
+    const image = await pickLocalImage("team");
+    if (image?.uri) {
+      setForm((state) => ({ ...state, image_url: image.uri, image }));
+    }
   };
   const submit = async () => {
     if (!form.name.trim()) return Alert.alert("Error", "Name is required.");
@@ -972,10 +1033,15 @@ function TeamFormScreen({ navigation, route }) {
       <Header navigation={navigation} back />
       <PageTitle title={current ? "Edit Team" : "Add Team"} />
       <View style={[styles.panel, styles.formPanel]}>
+        <TouchableOpacity style={styles.uploadBanner} onPress={pickImage} activeOpacity={0.86}>
+          <Image source={sourceFrom(form.image_url, defaultTeam?.image || assets.teams.gotham)} style={styles.uploadBannerImage} />
+          <View style={styles.uploadBannerShade} />
+          <Text style={styles.uploadBannerText}>{form.image_url ? "Change image" : "Upload image"}</Text>
+        </TouchableOpacity>
         <FieldLabel>Name:</FieldLabel>
         <Input value={form.name} onChangeText={setTeamName} placeholder="Name" />
         <FieldLabel>Image URL:</FieldLabel>
-        <Input value={form.image_url} onChangeText={(value) => set("image_url", value)} placeholder="Image URL" />
+        <Input value={form.image_url} onChangeText={(value) => setForm((state) => ({ ...state, image_url: value, image: null }))} placeholder="Image URL" />
         <FieldLabel>Type:</FieldLabel>
         <Input value={form.type} onChangeText={(value) => set("type", value)} placeholder="Type" />
         <FieldLabel>Headquarters:</FieldLabel>
@@ -1309,8 +1375,17 @@ const styles = StyleSheet.create({
   totalValue: { color: "#49a8ff" },
   cityFormCard: { position: "relative", width: "100%", maxWidth: 356, minHeight: 532, marginTop: 20, padding: 28, overflow: "hidden", borderWidth: 4, borderColor: "#08213d", borderRadius: 18, justifyContent: "center" },
   formShade: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(4,33,59,0.46)" },
+  uploadBanner: { width: "100%", height: 104, marginBottom: 12, overflow: "hidden", borderRadius: 18, borderWidth: 3, borderColor: "#0785ff", backgroundColor: "#08213d", alignItems: "center", justifyContent: "center" },
+  uploadBannerImage: { width: "100%", height: "100%", resizeMode: "cover" },
+  uploadBannerShade: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(4,33,59,0.28)" },
+  uploadBannerText: { position: "absolute", color: "#ffffff", fontFamily: "DcText", fontSize: 18, textAlign: "center", textTransform: "uppercase", textShadowColor: "#08213d", textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 1 },
   teamBanner: { width: "100%", height: 132, marginTop: 14, marginBottom: 14, borderRadius: 18, resizeMode: "cover" },
   formPanel: { marginTop: 24, gap: 8 },
+  photoChoiceGrid: { width: "100%", maxHeight: 184, flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: 10, marginBottom: 12, paddingVertical: 6 },
+  photoChoice: { width: 76, minHeight: 92, alignItems: "center", padding: 5, borderRadius: 12, borderWidth: 2, borderColor: "rgba(255,255,255,0.32)", backgroundColor: "rgba(235,235,235,0.72)" },
+  photoChoiceSelected: { borderColor: "#0785ff", backgroundColor: "rgba(7,133,255,0.78)" },
+  photoChoiceImage: { width: 48, height: 48, borderRadius: 24, resizeMode: "cover", backgroundColor: "#08213d" },
+  photoChoiceText: { marginTop: 5, color: "#08213d", fontFamily: "DcText", fontSize: 10, lineHeight: 12, textAlign: "center", textTransform: "uppercase" },
   chipsRow: { width: "100%", height: 66, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 17, marginVertical: 10, borderRadius: 31, backgroundColor: "rgba(235,235,235,0.76)" },
   chip: { width: 55, height: 55, borderRadius: 28, borderWidth: 3, borderColor: "#0785ff", resizeMode: "cover" },
   emptySlot: { width: 55, height: 55, alignItems: "center", justifyContent: "center", borderRadius: 28, borderWidth: 3, borderColor: "#0785ff", backgroundColor: "rgba(235,235,235,0.78)" },

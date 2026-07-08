@@ -128,8 +128,8 @@ const buildFormData = (data) => {
 
   Object.entries(data).forEach(([key, value]) => {
     if (value === undefined || value === null) return;
-    if (key === "photo" && value) {
-      formData.append("photo", value);
+    if ((key === "photo" || key === "image") && value) {
+      formData.append(key, value);
       return;
     }
     if (typeof value === "object" && value !== null && !value?.uri && !(typeof File !== "undefined" && value instanceof File)) {
@@ -189,16 +189,36 @@ export const fetchCityById = async (id) => {
 };
 
 export const addCity = async (city) => {
+  const payload = pickDefined(city, cityFields);
+  if (city.photo && city.photo.uri && isLocalFile(city.photo)) {
+    const formData = buildFormData({ ...payload, photo: city.photo });
+    return requestJson("/cities", {
+      method: "POST",
+      headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+      body: formData
+    });
+  }
+
   return requestJson("/cities", {
     method: "POST",
-    body: JSON.stringify(pickDefined(city, cityFields))
+    body: JSON.stringify(payload)
   });
 };
 
 export const updateCity = async (id, city) => {
+  const payload = pickDefined(city, cityFields);
+  if (city.photo && city.photo.uri && isLocalFile(city.photo)) {
+    const formData = buildFormData({ ...payload, photo: city.photo });
+    return requestJson(`/cities/${id}`, {
+      method: "PUT",
+      headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+      body: formData
+    });
+  }
+
   return requestJson(`/cities/${id}`, {
     method: "PUT",
-    body: JSON.stringify(pickDefined(city, cityFields))
+    body: JSON.stringify(payload)
   });
 };
 
@@ -215,16 +235,36 @@ export const fetchTeamById = async (id) => {
 };
 
 export const addTeam = async (team) => {
+  const payload = pickDefined(team, teamFields);
+  if (team.image && team.image.uri && isLocalFile(team.image)) {
+    const formData = buildFormData({ ...payload, image: team.image });
+    return requestJson("/teams", {
+      method: "POST",
+      headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+      body: formData
+    });
+  }
+
   return requestJson("/teams", {
     method: "POST",
-    body: JSON.stringify(pickDefined(team, teamFields))
+    body: JSON.stringify(payload)
   });
 };
 
 export const updateTeam = async (id, team) => {
+  const payload = pickDefined(team, teamFields);
+  if (team.image && team.image.uri && isLocalFile(team.image)) {
+    const formData = buildFormData({ ...payload, image: team.image });
+    return requestJson(`/teams/${id}`, {
+      method: "PUT",
+      headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+      body: formData
+    });
+  }
+
   return requestJson(`/teams/${id}`, {
     method: "PUT",
-    body: JSON.stringify(pickDefined(team, teamFields))
+    body: JSON.stringify(payload)
   });
 };
 

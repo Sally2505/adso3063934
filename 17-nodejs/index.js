@@ -36,17 +36,23 @@ const resources = {
     characters: {
         singular: 'character',
         columns: ['photo_url', 'name', 'real_name', 'age', 'role', 'ability', 'alignment', 'enemy', 'city', 'team', 'history'],
-        required: ['name']
+        required: ['name'],
+        uploadField: 'photo',
+        imageColumn: 'photo_url'
     },
     cities: {
         singular: 'city',
         columns: ['photo_url', 'name', 'state', 'country', 'population_characters', 'population_count'],
-        required: ['name']
+        required: ['name'],
+        uploadField: 'photo',
+        imageColumn: 'photo_url'
     },
     teams: {
         singular: 'team',
         columns: ['image_url', 'name', 'type', 'headquarters', 'members'],
-        required: ['name']
+        required: ['name'],
+        uploadField: 'image',
+        imageColumn: 'image_url'
     }
 };
 
@@ -204,12 +210,15 @@ Object.entries(resources).forEach(([table, config]) => {
         });
     });
 
-    const uploadMiddleware = table === 'characters' ? upload.single('photo') : (req, res, next) => next();
+    const uploadMiddleware = config.uploadField ? upload.single(config.uploadField) : (req, res, next) => next();
+    const setUploadedImageUrl = (req) => {
+        if (req.file && config.imageColumn) {
+            req.body[config.imageColumn] = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+        }
+    };
 
     apiRouter.post(`/${table}`, uploadMiddleware, (req, res) => {
-        if (table === 'characters' && req.file) {
-            req.body.photo_url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-        }
+        setUploadedImageUrl(req);
 
         const missingFields = getMissingFields(req.body, config.required);
 
@@ -229,9 +238,7 @@ Object.entries(resources).forEach(([table, config]) => {
 
     apiRouter.put(`/${table}/:id`, uploadMiddleware, (req, res) => {
         const { id } = req.params;
-        if (table === 'characters' && req.file) {
-            req.body.photo_url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-        }
+        setUploadedImageUrl(req);
 
         const updates = config.columns.filter((column) => req.body[column] !== undefined);
 
@@ -242,8 +249,8 @@ Object.entries(resources).forEach(([table, config]) => {
         const partialUpdateSet = updates.map((column) => `${column} = ?`).join(', ');
         const partialValues = updates.map((column) => normalizeValue(req.body[column]));
 
-        if (table === 'characters') {
-            db.get(`SELECT photo_url FROM characters WHERE id = ?`, [id], (err, current) => {
+        if (config.imageColumn) {
+            db.get(`SELECT ${config.imageColumn} FROM ${table} WHERE id = ?`, [id], (err, current) => {
                 if (err) return sendDbError(res, err);
                 if (!current) return res.status(404).json({ error: `${config.singular} not found` });
 
@@ -254,8 +261,8 @@ Object.entries(resources).forEach(([table, config]) => {
                         if (updateErr) return sendDbError(res, updateErr);
                         if (this.changes === 0) return res.status(404).json({ error: `${config.singular} not found` });
 
-                        if (req.file && current.photo_url && current.photo_url.includes('/uploads/')) {
-                            const oldPath = path.join(uploadsDir, path.basename(current.photo_url));
+                        if (req.file && current[config.imageColumn] && current[config.imageColumn].includes('/uploads/')) {
+                            const oldPath = path.join(uploadsDir, path.basename(current[config.imageColumn]));
                             fs.unlink(oldPath, () => {});
                         }
 
