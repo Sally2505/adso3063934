@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Syte DC",
+    "slug": "syte-dc",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "assetBundlePatterns": [
+      "assets/**/*"
+    ],
+    "splash": {
+      "backgroundColor": "#06111d"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#06111d"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

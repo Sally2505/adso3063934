@@ -10,32 +10,28 @@
 
 <body>
     <main class="screen bg-teams">
-        <button class="small-logo" type="button" aria-label="Abrir sidebar"><img src="../imgs/DC_Comics_logo.svg" alt=""></button>
+        <button class="small-logo" type="button" aria-label="Abrir sidebar"><img src="../imgs/logoDC.png" alt=""></button>
         <a class="plus-icon" href="team-add.html">+</a>
         <div class="sidebar-shade" aria-hidden="true"></div>
         <aside class="sidebar" aria-label="Menu lateral">
-            <button class="sidebar-logo" type="button" aria-label="Cerrar sidebar"><img src="../imgs/DC_Comics_logo.svg" alt=""></button>
+            <button class="sidebar-logo" type="button" aria-label="Cerrar sidebar"><img src="../imgs/logoDC.png" alt=""></button>
             <nav class="sidebar-menu">
-                <a class="sidebar-option" href="dashboard.html"><img src="../imgs/00af94715567fa713114e67d293d6f97.jpg" alt=""><span>Dashboard</span></a>
-                <a class="sidebar-option" href="profile.html"><img src="../imgs/cf4ae4053175c8f4e54bfa0992527bab.jpg" alt=""><span>My profile</span></a>
-                <a class="sidebar-option" href="characters.html"><img src="../imgs/Profile.webp" alt=""><span>Characters</span></a>
-                <a class="sidebar-option" href="cities.html"><img src="../imgs/Central_City_Flash.png" alt=""><span>Cities</span></a>
-                <a class="sidebar-option" href="teams.html"><img src="../imgs/Los_Jovenes_Titanes.avif" alt=""><span>Teams</span></a>
+                <a class="sidebar-option" href="dashboard.html"><img src="../imgs/sidebar/dashboard.jpg" alt=""><span>Dashboard</span></a>
+                <a class="sidebar-option" href="profile.html"><img src="../imgs/sidebar/myProfile.jpg" alt=""><span>My profile</span></a>
+                <a class="sidebar-option" href="characters.html"><img src="../imgs/sidebar/characters.jpg" alt=""><span>Characters</span></a>
+                <a class="sidebar-option" href="cities.html"><img src="../imgs/cities/CentralCity.png" alt=""><span>Cities</span></a>
+                <a class="sidebar-option" href="teams.html"><img src="../imgs/teams/Los_Jovenes_Titanes.avif" alt=""><span>Teams</span></a>
             </nav>
         </aside>
 
         <section class="content">
             <div class="list-header">
-                <div class="section-emblem"><img src="../imgs/liga_De_La_Justicia.jpg" alt=""></div>
+                <div class="section-emblem"><img src="../imgs/teams/liga_De_La_Justicia.jpg" alt=""></div>
                 <h1 class="page-title">Teams</h1>
                 <p class="sub-title">Welcome to Teams Section</p>
             </div>
-            <div class="list-panel">
-                <article class="list-card"><img src="../imgs/liga_De_La_Justicia.jpg" alt=""><span class="name" style="left:30px">Justice League</span><span class="tools"><a class="tool-dot details" href="team-details.html" aria-label="Detalles">Detalles</a><a class="tool-dot edit" href="team-update.html" aria-label="Editar">Editar</a><span class="tool-dot delete" aria-label="Eliminar">Eliminar</span></span></article>
-                <article class="list-card"><img src="../imgs/aves-de_presa.webp" alt=""><span class="name" style="left:30px">Birds of prey</span><span class="tools"><a class="tool-dot details" href="team-details.html" aria-label="Detalles">Detalles</a><a class="tool-dot edit" href="team-update.html" aria-label="Editar">Editar</a><span class="tool-dot delete" aria-label="Eliminar">Eliminar</span></span></article>
-                <article class="list-card"><img src="../imgs/Los_Jovenes_Titanes.avif" alt=""><span class="name" style="left:30px">Teen Titans</span><span class="tools"><a class="tool-dot details" href="team-details.html" aria-label="Detalles">Detalles</a><a class="tool-dot edit" href="team-update.html" aria-label="Editar">Editar</a><span class="tool-dot delete" aria-label="Eliminar">Eliminar</span></span></article>
-                <article class="list-card"><img src="../imgs/Profile.webp" alt=""><span class="name" style="left:30px">Gotham Knights</span><span class="tools"><a class="tool-dot details" href="team-details.html" aria-label="Detalles">Detalles</a><a class="tool-dot edit" href="team-update.html" aria-label="Editar">Editar</a><span class="tool-dot delete" aria-label="Eliminar">Eliminar</span></span></article>
-                <article class="list-card"><img src="../imgs/Escuadron_Suicida_2.jpg" alt=""><span class="name" style="left:30px">Suicide Squad</span><span class="tools"><a class="tool-dot details" href="team-details.html" aria-label="Detalles">Detalles</a><a class="tool-dot edit" href="team-update.html" aria-label="Editar">Editar</a><span class="tool-dot delete" aria-label="Eliminar">Eliminar</span></span></article>
+            <div class="list-panel" id="teamsList">
+                <p class="empty-state">Loading teams</p>
             </div>
         </section>
 

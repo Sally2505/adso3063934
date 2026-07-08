@@ -3,18 +3,19 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Add City</title><link rel="stylesheet" href="sections.css"></head>
 <body>
     <main class="screen bg-cities">
-        <button class="small-logo" type="button"><img src="../imgs/DC_Comics_logo.svg" alt=""></button><a class="back-icon" href="cities.html">‹</a>
-        <div class="sidebar-shade"></div><aside class="sidebar"><button class="sidebar-logo" type="button"><img src="../imgs/DC_Comics_logo.svg" alt=""></button><nav class="sidebar-menu"><a class="sidebar-option" href="dashboard.html"><img src="../imgs/00af94715567fa713114e67d293d6f97.jpg" alt=""><span>Dashboard</span></a><a class="sidebar-option" href="profile.html"><img src="../imgs/cf4ae4053175c8f4e54bfa0992527bab.jpg" alt=""><span>My profile</span></a><a class="sidebar-option" href="characters.html"><img src="../imgs/Profile.webp" alt=""><span>Characters</span></a><a class="sidebar-option" href="cities.html"><img src="../imgs/Central_City_Flash.png" alt=""><span>Cities</span></a><a class="sidebar-option" href="teams.html"><img src="../imgs/Los_Jovenes_Titanes.avif" alt=""><span>Teams</span></a></nav></aside>
+        <button class="small-logo" type="button"><img src="../imgs/logoDC.png" alt=""></button><a class="back-icon" href="cities.html">Back</a>
+        <div class="sidebar-shade"></div><aside class="sidebar"><button class="sidebar-logo" type="button"><img src="../imgs/logoDC.png" alt=""></button><nav class="sidebar-menu"><a class="sidebar-option" href="dashboard.html"><img src="../imgs/sidebar/dashboard.jpg" alt=""><span>Dashboard</span></a><a class="sidebar-option" href="profile.html"><img src="../imgs/sidebar/myProfile.jpg" alt=""><span>My profile</span></a><a class="sidebar-option" href="characters.html"><img src="../imgs/sidebar/characters.jpg" alt=""><span>Characters</span></a><a class="sidebar-option" href="cities.html"><img src="../imgs/cities/CentralCity.png" alt=""><span>Cities</span></a><a class="sidebar-option" href="teams.html"><img src="../imgs/teams/Los_Jovenes_Titanes.avif" alt=""><span>Teams</span></a></nav></aside>
         <section class="content">
             <h1 class="page-title">Add City</h1>
-            <form class="panel dark" style="margin-top:24px;padding-top:25px;padding-bottom:68px">
-                <span class="label">City Name:</span><input class="field" value="Metropolis">
-                <span class="label">Country:</span><input class="field" value="USA">
-                <span class="label">Status:</span><input class="field" value="Delaware">
+            <form class="panel dark form-scroll" id="cityForm" style="margin-top:24px;padding-top:25px;padding-bottom:34px">
+                <span class="label">City Name:</span><select class="select-field" name="name" id="citySelect"></select>
+                <span class="label">Country:</span><input class="field" name="country" value="USA">
+                <span class="label">Status:</span><input class="field" name="state" value="New Jersey">
+                <input name="population_count" type="hidden" value="0">
                 <span class="label">Add Characters:</span>
-                <div class="chips-row"><span class="arrow-box">‹</span><span class="round-icon"><img src="../imgs/bane.png" alt=""></span><span class="round-icon"><img src="../imgs/the batman who laughs.png" alt=""></span><span class="round-icon"><img src="../imgs/batman.png" alt=""></span><span class="arrow-box">›</span></div>
+                <div class="chips-row"><span class="arrow-box">&lt;</span><span class="round-icon"><img src="../imgs/icons/characters.png" alt=""></span><span class="round-icon"><img src="../imgs/icons/characters.png" alt=""></span><span class="round-icon"><img src="../imgs/icons/characters.png" alt=""></span><span class="arrow-box">&gt;</span></div>
             </form>
-            <a class="action-btn" href="cities.html">Add</a>
+            <button class="action-btn" type="submit" form="cityForm">Add</button>
         </section>
         <nav class="bottom-nav"><a class="nav-link" href="dashboard.html">Dashboard</a><a class="nav-link" href="profile.html">My profile</a><a class="nav-link" href="characters.html">Characters</a><a class="nav-link active" href="cities.html">Cities</a><a class="nav-link" href="teams.html">Teams</a></nav>
     </main><script src="sections.js"></script>
