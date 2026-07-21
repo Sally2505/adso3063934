@@ -1,19 +1,21 @@
 import Constants from "expo-constants";
 import { Platform } from "react-native";
 
+const LAN_HOST = "192.168.0.28";
+
 const resolveApiHosts = () => {
-  const candidates = [];
+  const candidates = [LAN_HOST];
   const debuggerHost = Constants.expoConfig?.hostUri || Constants.manifest?.debuggerHost || Constants.manifest2?.extra?.expoGo?.debuggerHost;
   if (typeof debuggerHost === "string" && debuggerHost) {
     candidates.push(debuggerHost.split(":")[0]);
   }
 
   if (Platform.OS === "android") {
-    candidates.push("10.0.2.2", "192.168.1.16", "localhost");
+    candidates.push("10.0.2.2", "localhost");
   } else if (Platform.OS === "ios") {
-    candidates.push("localhost", "127.0.0.1", "192.168.1.16");
+    candidates.push("localhost", "127.0.0.1");
   } else {
-    candidates.push("localhost", "127.0.0.1", "192.168.1.16");
+    candidates.push("localhost", "127.0.0.1");
   }
 
   return Array.from(new Set(candidates.filter(Boolean)));

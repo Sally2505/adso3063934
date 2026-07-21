@@ -44,7 +44,7 @@ sidebarLinks.forEach((link) => {
     });
 });
 
-const API_URL = "http://localhost:3000";
+const API_URL = "http://192.168.0.28:3000";
 const TOKEN_KEY = "dcToken";
 const LOCAL_CHARACTERS_KEY = "dcLocalCharacters";
 const LOCAL_CITIES_KEY = "dcLocalCities";

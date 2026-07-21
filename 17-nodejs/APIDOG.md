@@ -1,8 +1,8 @@
 # APIDOG API Documentation
 
-Base URL: `http://192.168.1.16:3000/api`
+Base URL: `http://192.168.0.28:3000/api`
 
-> Si usas Expo Go en un dispositivo Android físico, usa `http://192.168.1.16:3000/api` en `18-react-native/syte-react/api.js` y en APIDOG.
+> Si usas Expo Go en un dispositivo Android físico, usa `http://192.168.0.28:3000/api` en `18-react-native/syte-react/api.js` y en APIDOG.
 
 ## Auth
 

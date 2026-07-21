@@ -297,4 +297,4 @@ Object.entries(resources).forEach(([table, config]) => {
 
 app.use('/api', apiRouter);
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT} and http://192.168.1.16:${PORT}`));
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT} and http://192.168.0.28:${PORT}`));
